@@ -1,0 +1,28 @@
+{
+  "root": "apps/poker-app-e2e",
+  "sourceRoot": "apps/poker-app-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/poker-app-e2e/cypress.json",
+        "devServerTarget": "poker-app:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "poker-app:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/poker-app-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["poker-app"]
+}

@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "poker-app": "apps/poker-app",
+    "poker-app-e2e": "apps/poker-app-e2e"
+  }
+}
