@@ -1,4 +1,5 @@
 import { Layout } from '@after-dark-app/common-ui';
+import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 export function PokerRoom() {
@@ -6,7 +7,13 @@ export function PokerRoom() {
 
   const roomId = router.query.roomId;
 
-  return <Layout></Layout>;
+  return (
+    <Layout>
+      <Box>
+        You&apos;re in room {roomId}. Imagine a poker game was going on here
+      </Box>
+    </Layout>
+  );
 }
 
 export default PokerRoom;

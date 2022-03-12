@@ -18,6 +18,7 @@ export function Index() {
             color="primary"
             variant="contained"
             size="large"
+            onClick={playGame}
             sx={{
               width: 200,
             }}
