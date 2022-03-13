@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const MainContent = styled.main`
   min-height: 200px;
+  padding: 20px;
   grid-area: main;
 `;
 

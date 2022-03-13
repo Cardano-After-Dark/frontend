@@ -24,17 +24,31 @@ export function PokerRoom() {
         <PokerTable
           players={[
             {
-              numberOfCards: 2,
+              cards: (
+                <Stack direction={'row'} spacing={1}>
+                  <PokerCard scaleSize={0.5} />
+                  <PokerCard scaleSize={0.5} />
+                </Stack>
+              ),
             },
             {
-              numberOfCards: 2,
+              cards: (
+                <Stack direction={'row'} spacing={1}>
+                  <PokerCard scaleSize={0.5} />
+                  <PokerCard scaleSize={0.5} />
+                </Stack>
+              ),
             },
             {
-              numberOfCards: 2,
+              cards: (
+                <Stack direction={'row'} spacing={1}>
+                  <PokerCard scaleSize={0.5} />
+                  <PokerCard scaleSize={0.5} />
+                </Stack>
+              ),
             },
           ]}
           hand={{
-            numberOfCards: 3,
             cards: (
               <Stack direction={'row'} spacing={1}>
                 <PokerCard

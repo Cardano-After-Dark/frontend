@@ -3,9 +3,10 @@ import { Box } from '@mui/system';
 import React from 'react';
 
 type Player = {
-  numberOfCards: number;
   cards?: React.ReactChild;
-  fliped?: boolean;
+  currency?: number;
+  bet?: number;
+  profile?: any;
 };
 
 type PokerTableProps = {
@@ -97,7 +98,7 @@ export function PokerTable({ river, hand, players }: PokerTableProps) {
             transform: 'translateX(-50%)',
           }}
         >
-          Player 1
+          {players[0].cards && players[0].cards}
         </Box>
       )}
       {players.length >= 2 && (
@@ -111,7 +112,7 @@ export function PokerTable({ river, hand, players }: PokerTableProps) {
             transform: 'translateY(-50%)',
           }}
         >
-          Player 2
+          {players[1].cards && players[1].cards}
         </Box>
       )}
       {players.length >= 3 && (
@@ -125,7 +126,7 @@ export function PokerTable({ river, hand, players }: PokerTableProps) {
             transform: 'translateY(-50%)',
           }}
         >
-          Player 3
+          {players[2].cards && players[2].cards}
         </Box>
       )}
     </PokerTableContainer>
