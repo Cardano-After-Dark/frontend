@@ -1,8 +1,8 @@
 import { Story, Meta } from '@storybook/react';
-import { Table } from './Table';
+import { PokerTable } from './PokerTable';
 
 export default {
-  component: Table,
+  component: PokerTable,
   title: 'Table',
   argTypes: {
     river: {
@@ -15,7 +15,7 @@ export default {
 } as Meta;
 
 const Template: Story = (args) => (
-  <Table river={args['river']} players={args['players']} {...args} />
+  <PokerTable river={args['river']} players={args['players']} {...args} />
 );
 
 export const Primary = Template.bind({});
