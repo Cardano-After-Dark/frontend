@@ -17,6 +17,7 @@
     "paths": {
       "@after-dark-app/common-ui": ["libs/common-ui/src/index.ts"],
       "@after-dark-app/images": ["libs/images/src/index.ts"],
+      "@after-dark-app/poker-ui": ["libs/poker-ui/src/index.ts"],
       "@after-dark-app/utilities": ["libs/utilities/src/index.ts"]
     }
   },

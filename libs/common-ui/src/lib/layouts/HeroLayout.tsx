@@ -1,6 +1,4 @@
 import { LayoutWrapper, MainContent, Hero } from './HeroLayout.style';
-
-import Footer from '../footer/Footer';
 import Image from 'next/image';
 import { Brickwall } from '@after-dark-app/images';
 

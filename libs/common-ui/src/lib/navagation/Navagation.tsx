@@ -8,7 +8,6 @@ import {
   useScrollTrigger,
 } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
 
 export const Navigation = () => {
   const isScrolled = useScrollTrigger({
