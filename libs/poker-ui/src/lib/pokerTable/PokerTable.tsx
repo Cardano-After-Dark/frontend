@@ -1,8 +1,11 @@
 import { styled } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
+import { Hand } from './hand/Hand';
+import { Player, Seats } from './player/Player';
+import River from './river/River';
 
-type Player = {
+export type Player = {
   cards?: React.ReactChild;
   currency?: number;
   bet?: number;
@@ -51,83 +54,25 @@ export const PokerTableContainer = styled('div')`
 export function PokerTable({ river, hand, players }: PokerTableProps) {
   return (
     <PokerTableContainer>
-      <Box
-        sx={{
-          border: `3px solid rgba(255, 255, 255, 0.2)`,
-          width: 300,
-          height: 100,
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          borderRadius: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {river}
-      </Box>
-      <Box
-        sx={{
-          border: `3px solid rgba(255, 255, 255, 0.2)`,
-          borderRadius: 3,
-          width: 200,
-          height: 100,
-          position: 'absolute',
-          bottom: 30,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {hand.cards && hand.cards}
-      </Box>
+      <River>{river}</River>
+      <Hand cards={hand.cards} />
       {players.length >= 1 && (
-        <Box
-          sx={{
-            width: 200,
-            height: 100,
-            position: 'absolute',
-            top: 30,
-            left: '50%',
-            transform: 'translateX(-50%)',
-          }}
-        >
-          {players[0].cards && players[0].cards}
-        </Box>
+        <Player
+          cards={players[0].cards && players[0].cards}
+          position={Seats.Seat1}
+        />
       )}
       {players.length >= 2 && (
-        <Box
-          sx={{
-            width: 200,
-            height: 100,
-            position: 'absolute',
-            top: '50%',
-            left: 30,
-            transform: 'translateY(-50%)',
-          }}
-        >
-          {players[1].cards && players[1].cards}
-        </Box>
+        <Player
+          cards={players[1].cards && players[1].cards}
+          position={Seats.Seat3}
+        />
       )}
       {players.length >= 3 && (
-        <Box
-          sx={{
-            width: 200,
-            height: 100,
-            position: 'absolute',
-            top: '50%',
-            right: 30,
-            transform: 'translateY(-50%)',
-          }}
-        >
-          {players[2].cards && players[2].cards}
-        </Box>
+        <Player
+          cards={players[2].cards && players[2].cards}
+          position={Seats.Seat5}
+        />
       )}
     </PokerTableContainer>
   );
