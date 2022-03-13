@@ -1,4 +1,6 @@
+import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { Bet, BetPosition } from '../bet/Bet';
 import { Player } from '../PokerTable';
 
 export enum Seats {
@@ -11,62 +13,80 @@ export enum Seats {
 
 type PlayerConfig = {
   position: Seats;
+  player: Player;
 };
 
-type PlayerProps = Player & PlayerConfig;
+type PlayerProps = PlayerConfig;
 
 const playerPositions = [
   {
-    top: 30,
-    left: '50%',
-    transform: 'translateX(-50%)',
+    // Player across from user
+    player: {
+      top: 30,
+      left: '50%',
+      transform: 'translateX(-50%)',
+    },
+    bet: BetPosition.Bottom,
   },
   {
-    top: 30,
-    left: 30,
+    // top left corner
+    player: {
+      top: 30,
+      left: 30,
+    },
+    bet: BetPosition.Bottom,
   },
   {
-    top: '50%',
-    left: 30,
-    transform: 'translateY(-50%)',
+    player: {
+      top: '50%',
+      left: 30,
+      transform: 'translateY(-50%)',
+    },
+    bet: BetPosition.Right,
   },
   {
-    top: 30,
-    right: 230,
+    player: {
+      top: 30,
+      right: 230,
+    },
+    bet: BetPosition.Left,
   },
   {
-    top: '50%',
-    right: 30,
-    transform: 'translateY(-50%)',
+    player: {
+      top: '50%',
+      right: 30,
+      transform: 'translateY(-50%)',
+    },
+    bet: BetPosition.Left,
   },
 ];
 
-export function Player({ cards, position }: PlayerProps) {
+export function Player({ position, player }: PlayerProps) {
+  const { cards, name, bank, bet } = player;
   return (
     <Box
       sx={{
         border: `3px solid rgba(255, 255, 255, 0.2)`,
         borderRadius: 3,
-        width: 200,
-        height: 100,
+        padding: '20px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        padding: '10px',
-        ...playerPositions[position],
+        ...playerPositions[position].player,
       }}
     >
+      {bet && <Bet amount={bet} position={playerPositions[position].bet} />}
       {cards && cards}
       <Box
         sx={{
-          width: 60,
           height: '100%',
           marginLeft: '5px',
           padding: '5px',
         }}
       >
-        Profile / bet / name
+        <Typography variant="h5">{name}</Typography>
+        <Box>{bank}</Box>
       </Box>
     </Box>
   );

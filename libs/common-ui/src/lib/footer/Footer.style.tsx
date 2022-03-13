@@ -7,7 +7,7 @@ export const StyledFooter = styled.footer`
   align-items: center;
   padding: 0 30px;
   margin: 0;
-  background: ${theme.palette.primary.dark};
+  background: transparent;
   color: ${theme.palette.common.white};
   font-weight: 700;
   font-size: 1.3em;

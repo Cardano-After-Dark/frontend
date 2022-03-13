@@ -24,6 +24,9 @@ export function PokerRoom() {
         <PokerTable
           players={[
             {
+              name: 'Henry',
+              bank: 890,
+              bet: 1300,
               cards: (
                 <Stack direction={'row'} spacing={1}>
                   <PokerCard scaleSize={0.5} />
@@ -32,6 +35,9 @@ export function PokerRoom() {
               ),
             },
             {
+              name: 'Henry',
+              bank: 890,
+              bet: 1300,
               cards: (
                 <Stack direction={'row'} spacing={1}>
                   <PokerCard scaleSize={0.5} />
@@ -40,6 +46,9 @@ export function PokerRoom() {
               ),
             },
             {
+              name: 'Henry',
+              bank: 890,
+              bet: 200,
               cards: (
                 <Stack direction={'row'} spacing={1}>
                   <PokerCard scaleSize={0.5} />
@@ -49,6 +58,9 @@ export function PokerRoom() {
             },
           ]}
           hand={{
+            name: 'david',
+            bank: 320,
+            bet: 2300,
             cards: (
               <Stack direction={'row'} spacing={1}>
                 <PokerCard
@@ -69,27 +81,27 @@ export function PokerRoom() {
               <PokerCard
                 suit={Suits.Clubs}
                 value={CardValues.Ace}
-                scaleSize={0.5}
+                scaleSize={0.6}
               />
               <PokerCard
                 suit={Suits.Hearts}
                 value={CardValues.King}
-                scaleSize={0.5}
+                scaleSize={0.6}
               />
               <PokerCard
                 suit={Suits.Diamonds}
                 value={CardValues.Eight}
-                scaleSize={0.5}
+                scaleSize={0.6}
               />
               <PokerCard
                 suit={Suits.Spades}
                 value={CardValues.Seven}
-                scaleSize={0.5}
+                scaleSize={0.6}
               />
               <PokerCard
                 suit={Suits.Diamonds}
                 value={CardValues.Eight}
-                scaleSize={0.5}
+                scaleSize={0.6}
               />
             </Stack>
           }

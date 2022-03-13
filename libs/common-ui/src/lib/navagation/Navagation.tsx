@@ -16,7 +16,12 @@ export const Navigation = () => {
   });
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      }}
+    >
       <Container maxWidth="xl">
         <Stack direction={'row'} justifyContent="start" alignItems="center">
           <Box

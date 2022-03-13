@@ -9,7 +9,8 @@ export type Player = {
   cards?: React.ReactChild;
   currency?: number;
   bet?: number;
-  profile?: any;
+  name?: string;
+  bank?: number;
 };
 
 type PokerTableProps = {
@@ -55,24 +56,15 @@ export function PokerTable({ river, hand, players }: PokerTableProps) {
   return (
     <PokerTableContainer>
       <River>{river}</River>
-      <Hand cards={hand.cards} />
+      <Hand player={hand} />
       {players.length >= 1 && (
-        <Player
-          cards={players[0].cards && players[0].cards}
-          position={Seats.Seat1}
-        />
+        <Player player={players[0]} position={Seats.Seat1} />
       )}
       {players.length >= 2 && (
-        <Player
-          cards={players[1].cards && players[1].cards}
-          position={Seats.Seat3}
-        />
+        <Player player={players[1]} position={Seats.Seat3} />
       )}
       {players.length >= 3 && (
-        <Player
-          cards={players[2].cards && players[2].cards}
-          position={Seats.Seat5}
-        />
+        <Player player={players[2]} position={Seats.Seat5} />
       )}
     </PokerTableContainer>
   );

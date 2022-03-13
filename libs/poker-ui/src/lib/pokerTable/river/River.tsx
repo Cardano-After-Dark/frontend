@@ -9,9 +9,8 @@ export function River({ children }: RiverProps) {
     <Box
       sx={{
         border: `3px solid rgba(255, 255, 255, 0.2)`,
-        width: 300,
-        height: 100,
         position: 'absolute',
+        padding: '20px',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
