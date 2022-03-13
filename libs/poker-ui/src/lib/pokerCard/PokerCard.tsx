@@ -2,6 +2,7 @@ import { Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Clubs, Diamonds, Hearts, Spades } from '@after-dark-app/images';
+import { Box } from '@mui/system';
 
 export enum Suits {
   Hearts,
@@ -55,12 +56,53 @@ export function PokerCard({ suit, value, scaleSize = 1 }: CardProps) {
 
   return (
     <Paper
+      elevation={3}
       sx={{
         width: scaleSize * 100,
         height: scaleSize * 140,
+        position: 'relative',
+        color:
+          suit === Suits.Diamonds || suit === Suits.Hearts
+            ? '#dd2f45'
+            : '#292f33',
       }}
     >
-      <Image src={Clubs} layout="fill" />
+      <Box
+        sx={{
+          width: scaleSize * 30,
+          height: scaleSize * 30,
+          position: 'relative',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        {suitImage && (
+          <Image src={suitImage} layout="fill" objectFit="contain" />
+        )}
+      </Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: scaleSize * 2,
+          left: scaleSize * 10,
+          fontWeight: 900,
+          fontSize: scaleSize * 1.3 + 'rem',
+        }}
+      >
+        {value}
+      </Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: scaleSize * 2,
+          right: scaleSize * 10,
+          fontWeight: 900,
+          fontSize: scaleSize * 1.3 + 'rem',
+        }}
+      >
+        {value}
+      </Box>
     </Paper>
   );
 }

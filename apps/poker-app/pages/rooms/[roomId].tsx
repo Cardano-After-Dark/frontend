@@ -12,7 +12,17 @@ export function PokerRoom() {
     <Layout>
       <Box>
         You&apos;re in room {roomId}. Imagine a poker game was going on here
-        <PokerCard suit={Suits.Clubs} value={CardValues.Ace} />
+        <Stack direction={'row'} spacing={2}>
+          <PokerCard
+            suit={Suits.Clubs}
+            value={CardValues.Ace}
+            scaleSize={1.5}
+          />
+          <PokerCard suit={Suits.Hearts} value={CardValues.King} />
+          <PokerCard suit={Suits.Diamonds} value={CardValues.Eight} />
+          <PokerCard suit={Suits.Spades} value={CardValues.Seven} />
+          <PokerCard suit={Suits.Diamonds} value={CardValues.Eight} />
+        </Stack>
       </Box>
     </Layout>
   );
