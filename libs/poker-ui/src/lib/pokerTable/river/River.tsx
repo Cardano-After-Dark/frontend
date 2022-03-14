@@ -1,3 +1,4 @@
+import { theme } from '@after-dark-app/common-ui';
 import { Box } from '@mui/system';
 
 type RiverProps = {
@@ -10,7 +11,7 @@ export function River({ children }: RiverProps) {
       sx={{
         border: `3px solid rgba(255, 255, 255, 0.2)`,
         position: 'absolute',
-        padding: '20px',
+        padding: '5px',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
@@ -19,6 +20,9 @@ export function River({ children }: RiverProps) {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        [theme.breakpoints.down('md')]: {
+          top: '53%',
+        },
       }}
     >
       {children}

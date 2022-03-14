@@ -49,7 +49,9 @@ export function Bet({ amount, position }: BetProps) {
       sx={{
         position: 'absolute',
         [theme.breakpoints.down('md')]: {
-          ...betPositions[BetPosition.Bottom],
+          bottom: '80%',
+          left: 0,
+          zIndex: 1,
         },
         [theme.breakpoints.up('md')]: {
           ...betPositions[position],

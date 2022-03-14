@@ -26,9 +26,11 @@ const playerPositions = [
     // Player across from user
     player: {
       [theme.breakpoints.down('md')]: {
-        top: 30,
+        top: 0,
         left: '50%',
         transform: 'translateX(-50%)',
+        width: '135px',
+        height: '60px',
       },
       [theme.breakpoints.up('md')]: {
         top: 30,
@@ -41,6 +43,12 @@ const playerPositions = [
   {
     // top left corner
     player: {
+      [theme.breakpoints.down('md')]: {
+        top: '15%',
+        left: 0,
+        width: '135px',
+        height: '60px',
+      },
       [theme.breakpoints.up('md')]: {
         top: 30,
         left: 50,
@@ -51,6 +59,12 @@ const playerPositions = [
   {
     // bottom left corner
     player: {
+      [theme.breakpoints.down('md')]: {
+        top: '15%',
+        right: 0,
+        width: '135px',
+        height: '60px',
+      },
       [theme.breakpoints.up('md')]: {
         top: '70%',
         left: 30,
@@ -62,6 +76,12 @@ const playerPositions = [
   {
     // top right corner
     player: {
+      [theme.breakpoints.down('md')]: {
+        top: '30%',
+        left: 0,
+        width: '135px',
+        height: '60px',
+      },
       [theme.breakpoints.up('md')]: {
         top: 30,
         right: 50,
@@ -72,6 +92,12 @@ const playerPositions = [
   {
     // top right side
     player: {
+      [theme.breakpoints.down('md')]: {
+        top: '65%',
+        left: 0,
+        width: '135px',
+        height: '60px',
+      },
       [theme.breakpoints.up('md')]: {
         top: '40%',
         right: 30,
@@ -83,6 +109,12 @@ const playerPositions = [
   {
     // bottom right corner
     player: {
+      [theme.breakpoints.down('md')]: {
+        top: '65%',
+        right: 0,
+        width: '135px',
+        height: '60px',
+      },
       [theme.breakpoints.up('md')]: {
         top: '70%',
         right: 30,
@@ -94,6 +126,12 @@ const playerPositions = [
   {
     // top left side
     player: {
+      [theme.breakpoints.down('md')]: {
+        top: '30%',
+        right: 0,
+        width: '135px',
+        height: '60px',
+      },
       [theme.breakpoints.up('md')]: {
         top: '40%',
         left: 30,

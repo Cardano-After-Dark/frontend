@@ -9,7 +9,6 @@ export type LayoutProps = {
 
 export const Layout = ({ children }: LayoutProps) => (
   <LayoutWrapper>
-    <Navigation />
     <MainContent>{children}</MainContent>
     <Footer />
   </LayoutWrapper>
