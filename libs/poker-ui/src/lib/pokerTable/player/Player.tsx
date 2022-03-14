@@ -1,3 +1,4 @@
+import { theme } from '@after-dark-app/common-ui';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Bet, BetPosition } from '../bet/Bet';
@@ -9,6 +10,8 @@ export enum Seats {
   Seat3,
   Seat4,
   Seat5,
+  Seat6,
+  Seat7,
 }
 
 type PlayerConfig = {
@@ -25,6 +28,7 @@ const playerPositions = [
       top: 30,
       left: '50%',
       transform: 'translateX(-50%)',
+      [theme.breakpoints.up('md')]: {},
     },
     bet: BetPosition.Bottom,
   },
@@ -32,32 +36,64 @@ const playerPositions = [
     // top left corner
     player: {
       top: 30,
-      left: 30,
+      left: 50,
+      [theme.breakpoints.up('md')]: {},
     },
     bet: BetPosition.Bottom,
   },
   {
+    // bottom left corner
     player: {
-      top: '50%',
-      left: 30,
-      transform: 'translateY(-50%)',
+      [theme.breakpoints.up('md')]: {
+        top: '70%',
+        left: 30,
+        transform: 'translateY(-50%)',
+      },
     },
     bet: BetPosition.Right,
   },
   {
+    // top right corner
     player: {
-      top: 30,
-      right: 230,
+      [theme.breakpoints.up('md')]: {
+        top: 30,
+        right: 50,
+      },
+    },
+    bet: BetPosition.Bottom,
+  },
+  {
+    // top right side
+    player: {
+      [theme.breakpoints.up('md')]: {
+        top: '40%',
+        right: 30,
+        transform: 'translateY(-50%)',
+      },
+    },
+    bet: BetPosition.Bottom,
+  },
+  {
+    // bottom right corner
+    player: {
+      [theme.breakpoints.up('md')]: {
+        top: '70%',
+        right: 30,
+        transform: 'translateY(-50%)',
+      },
     },
     bet: BetPosition.Left,
   },
   {
+    // top left side
     player: {
-      top: '50%',
-      right: 30,
-      transform: 'translateY(-50%)',
+      [theme.breakpoints.up('md')]: {
+        top: '40%',
+        left: 30,
+        transform: 'translateY(-50%)',
+      },
     },
-    bet: BetPosition.Left,
+    bet: BetPosition.Bottom,
   },
 ];
 

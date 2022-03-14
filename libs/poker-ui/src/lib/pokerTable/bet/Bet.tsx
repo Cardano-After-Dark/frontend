@@ -11,15 +11,19 @@ export enum BetPosition {
 const betPositions = [
   {
     right: '105%',
+    top: 0,
   },
   {
     left: '105%',
+    top: 0,
   },
   {
-    top: '-110px',
+    bottom: '105%',
+    right: 0,
   },
   {
-    bottom: '-110px',
+    top: '105%',
+    right: 0,
   },
 ];
 
@@ -34,9 +38,11 @@ export function Bet({ amount, position }: BetProps) {
       sx={{
         border: `3px solid rgba(255, 255, 255, 0.2)`,
         borderRadius: 3,
-        padding: '20px',
-        width: 'auto',
-        height: 100,
+        padding: {
+          xs: '4px',
+          sm: '10px',
+          lg: '20px',
+        },
         position: 'absolute',
         display: 'flex',
         justifyContent: 'center',
@@ -44,7 +50,14 @@ export function Bet({ amount, position }: BetProps) {
         ...betPositions[position],
       }}
     >
-      <Typography variant="h2">{amount}</Typography>
+      <Typography
+        variant={'h4'}
+        sx={{
+          fontSize: { md: '2.3rem', lg: '2.5rem' },
+        }}
+      >
+        {amount}
+      </Typography>
     </Box>
   );
 }

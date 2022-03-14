@@ -66,6 +66,18 @@ export function PokerTable({ river, hand, players }: PokerTableProps) {
       {players.length >= 3 && (
         <Player player={players[2]} position={Seats.Seat5} />
       )}
+      {players.length >= 4 && (
+        <Player player={players[3]} position={Seats.Seat2} />
+      )}
+      {players.length >= 5 && (
+        <Player player={players[4]} position={Seats.Seat4} />
+      )}
+      {players.length >= 6 && (
+        <Player player={players[5]} position={Seats.Seat6} />
+      )}
+      {players.length >= 7 && (
+        <Player player={players[6]} position={Seats.Seat7} />
+      )}
     </PokerTableContainer>
   );
 }

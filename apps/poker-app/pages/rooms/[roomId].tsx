@@ -48,6 +48,50 @@ export function PokerRoom() {
             {
               name: 'Henry',
               bank: 890,
+              bet: 1300,
+              cards: (
+                <Stack direction={'row'} spacing={1}>
+                  <PokerCard scaleSize={0.5} />
+                  <PokerCard scaleSize={0.5} />
+                </Stack>
+              ),
+            },
+            {
+              name: 'Henry',
+              bank: 890,
+              bet: 1300,
+              cards: (
+                <Stack direction={'row'} spacing={1}>
+                  <PokerCard scaleSize={0.5} />
+                  <PokerCard scaleSize={0.5} />
+                </Stack>
+              ),
+            },
+            {
+              name: 'Henry',
+              bank: 890,
+              bet: 200,
+              cards: (
+                <Stack direction={'row'} spacing={1}>
+                  <PokerCard scaleSize={0.5} />
+                  <PokerCard scaleSize={0.5} />
+                </Stack>
+              ),
+            },
+            {
+              name: 'Henry',
+              bank: 890,
+              bet: 200,
+              cards: (
+                <Stack direction={'row'} spacing={1}>
+                  <PokerCard scaleSize={0.5} />
+                  <PokerCard scaleSize={0.5} />
+                </Stack>
+              ),
+            },
+            {
+              name: 'Henry',
+              bank: 890,
               bet: 200,
               cards: (
                 <Stack direction={'row'} spacing={1}>
