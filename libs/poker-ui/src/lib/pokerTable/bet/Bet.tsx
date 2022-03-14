@@ -1,20 +1,23 @@
-import { Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { theme } from '@after-dark-app/common-ui';
+import { Chip, Typography } from '@mui/material';
+import { Box, color } from '@mui/system';
 
 export enum BetPosition {
   Left,
   Right,
   Top,
   Bottom,
+  BottomRight,
+  BottomLeft,
 }
 
 const betPositions = [
   {
-    right: '105%',
+    right: '102%',
     top: 0,
   },
   {
-    left: '105%',
+    left: '102%',
     top: 0,
   },
   {
@@ -25,6 +28,14 @@ const betPositions = [
     top: '105%',
     right: 0,
   },
+  {
+    top: '105%',
+    left: '102%',
+  },
+  {
+    top: '105%',
+    right: '102%',
+  },
 ];
 
 type BetProps = {
@@ -34,31 +45,19 @@ type BetProps = {
 
 export function Bet({ amount, position }: BetProps) {
   return (
-    <Box
+    <Chip
       sx={{
-        border: `3px solid rgba(255, 255, 255, 0.2)`,
-        borderRadius: 3,
-        padding: {
-          xs: '4px',
-          sm: '10px',
-          lg: '20px',
-        },
         position: 'absolute',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        ...betPositions[position],
+        [theme.breakpoints.down('md')]: {
+          ...betPositions[BetPosition.Bottom],
+        },
+        [theme.breakpoints.up('md')]: {
+          ...betPositions[position],
+        },
       }}
-    >
-      <Typography
-        variant={'h4'}
-        sx={{
-          fontSize: { md: '2.3rem', lg: '2.5rem' },
-        }}
-      >
-        {amount}
-      </Typography>
-    </Box>
+      color="info"
+      label={amount}
+    />
   );
 }
 

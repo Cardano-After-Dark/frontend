@@ -1,5 +1,5 @@
 import { theme } from '@after-dark-app/common-ui';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Bet, BetPosition } from '../bet/Bet';
 import { Player } from '../PokerTable';
@@ -25,21 +25,28 @@ const playerPositions = [
   {
     // Player across from user
     player: {
-      top: 30,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      [theme.breakpoints.up('md')]: {},
+      [theme.breakpoints.down('md')]: {
+        top: 30,
+        left: '50%',
+        transform: 'translateX(-50%)',
+      },
+      [theme.breakpoints.up('md')]: {
+        top: 30,
+        left: '50%',
+        transform: 'translateX(-50%)',
+      },
     },
     bet: BetPosition.Bottom,
   },
   {
     // top left corner
     player: {
-      top: 30,
-      left: 50,
-      [theme.breakpoints.up('md')]: {},
+      [theme.breakpoints.up('md')]: {
+        top: 30,
+        left: 50,
+      },
     },
-    bet: BetPosition.Bottom,
+    bet: BetPosition.BottomRight,
   },
   {
     // bottom left corner
@@ -60,7 +67,7 @@ const playerPositions = [
         right: 50,
       },
     },
-    bet: BetPosition.Bottom,
+    bet: BetPosition.BottomLeft,
   },
   {
     // top right side
@@ -71,7 +78,7 @@ const playerPositions = [
         transform: 'translateY(-50%)',
       },
     },
-    bet: BetPosition.Bottom,
+    bet: BetPosition.Left,
   },
   {
     // bottom right corner
@@ -93,7 +100,7 @@ const playerPositions = [
         transform: 'translateY(-50%)',
       },
     },
-    bet: BetPosition.Bottom,
+    bet: BetPosition.Right,
   },
 ];
 
@@ -102,23 +109,30 @@ export function Player({ position, player }: PlayerProps) {
   return (
     <Box
       sx={{
-        border: `3px solid rgba(255, 255, 255, 0.2)`,
         borderRadius: 3,
-        padding: '20px',
+        padding: '5px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
+        background: 'rgba(255, 255, 255, 0.2)',
         ...playerPositions[position].player,
       }}
     >
       {bet && <Bet amount={bet} position={playerPositions[position].bet} />}
-      {cards && cards}
+      {cards && (
+        <Stack direction={'row'} spacing={-1}>
+          {cards}
+        </Stack>
+      )}
       <Box
         sx={{
           height: '100%',
-          marginLeft: '5px',
-          padding: '5px',
+          marginLeft: '10px',
+          padding: {
+            xs: 0,
+            md: '5px',
+          },
         }}
       >
         <Typography variant="h5">{name}</Typography>

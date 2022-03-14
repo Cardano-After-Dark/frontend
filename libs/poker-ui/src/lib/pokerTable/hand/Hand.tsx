@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Bet, BetPosition } from '../bet/Bet';
 import { Player } from '../PokerTable';
@@ -12,9 +12,9 @@ export function Hand({ player }: HandProps) {
   return (
     <Box
       sx={{
-        border: `3px solid rgba(255, 255, 255, 0.2)`,
+        background: 'rgba(255, 255, 255, 0.2)',
         borderRadius: 3,
-        padding: '20px',
+        padding: '5px',
         position: 'absolute',
         bottom: 30,
         left: '50%',
@@ -25,7 +25,11 @@ export function Hand({ player }: HandProps) {
       }}
     >
       {bet && <Bet amount={bet} position={BetPosition.Top} />}
-      {cards && cards}
+      {cards && (
+        <Stack direction={'row'} spacing={-1}>
+          {cards}
+        </Stack>
+      )}
       <Box
         sx={{
           height: '100%',

@@ -6,7 +6,7 @@ import { Player, Seats } from './player/Player';
 import River from './river/River';
 
 export type Player = {
-  cards?: React.ReactChild;
+  cards?: React.ReactNode[];
   currency?: number;
   bet?: number;
   name?: string;

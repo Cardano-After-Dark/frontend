@@ -27,98 +27,85 @@ export function PokerRoom() {
               name: 'Henry',
               bank: 890,
               bet: 1300,
-              cards: (
-                <Stack direction={'row'} spacing={1}>
-                  <PokerCard scaleSize={0.5} />
-                  <PokerCard scaleSize={0.5} />
-                </Stack>
-              ),
+              cards: [
+                <PokerCard scaleSize={0.5} key={1} />,
+                <PokerCard scaleSize={0.5} key={11} tilt />,
+              ],
             },
             {
               name: 'Henry',
               bank: 890,
               bet: 1300,
-              cards: (
-                <Stack direction={'row'} spacing={1}>
-                  <PokerCard scaleSize={0.5} />
-                  <PokerCard scaleSize={0.5} />
-                </Stack>
-              ),
+              cards: [
+                <PokerCard scaleSize={0.5} key={12} />,
+                <PokerCard scaleSize={0.5} key={122} tilt />,
+              ],
             },
             {
               name: 'Henry',
               bank: 890,
               bet: 1300,
-              cards: (
-                <Stack direction={'row'} spacing={1}>
-                  <PokerCard scaleSize={0.5} />
-                  <PokerCard scaleSize={0.5} />
-                </Stack>
-              ),
+              cards: [
+                <PokerCard scaleSize={0.5} key={13} />,
+                <PokerCard scaleSize={0.5} key={133} tilt />,
+              ],
             },
             {
               name: 'Henry',
               bank: 890,
               bet: 1300,
-              cards: (
-                <Stack direction={'row'} spacing={1}>
-                  <PokerCard scaleSize={0.5} />
-                  <PokerCard scaleSize={0.5} />
-                </Stack>
-              ),
+              cards: [
+                <PokerCard scaleSize={0.5} key={14} />,
+                <PokerCard scaleSize={0.5} key={144} tilt />,
+              ],
             },
             {
               name: 'Henry',
               bank: 890,
               bet: 200,
-              cards: (
-                <Stack direction={'row'} spacing={1}>
-                  <PokerCard scaleSize={0.5} />
-                  <PokerCard scaleSize={0.5} />
-                </Stack>
-              ),
+              cards: [
+                <PokerCard scaleSize={0.5} key={15} />,
+                <PokerCard scaleSize={0.5} key={155} tilt />,
+              ],
             },
             {
               name: 'Henry',
               bank: 890,
               bet: 200,
-              cards: (
-                <Stack direction={'row'} spacing={1}>
-                  <PokerCard scaleSize={0.5} />
-                  <PokerCard scaleSize={0.5} />
-                </Stack>
-              ),
+              cards: [
+                <PokerCard scaleSize={0.5} key={16} />,
+                <PokerCard scaleSize={0.5} key={166} tilt />,
+              ],
             },
             {
               name: 'Henry',
               bank: 890,
               bet: 200,
-              cards: (
-                <Stack direction={'row'} spacing={1}>
-                  <PokerCard scaleSize={0.5} />
-                  <PokerCard scaleSize={0.5} />
-                </Stack>
-              ),
+              cards: [
+                <PokerCard scaleSize={0.5} key={17} />,
+                <PokerCard scaleSize={0.5} key={177} tilt />,
+              ],
             },
           ]}
           hand={{
             name: 'david',
             bank: 320,
             bet: 2300,
-            cards: (
-              <Stack direction={'row'} spacing={1}>
-                <PokerCard
-                  suit={Suits.Clubs}
-                  value={CardValues.Ace}
-                  scaleSize={0.5}
-                />
-                <PokerCard
-                  suit={Suits.Hearts}
-                  value={CardValues.King}
-                  scaleSize={0.5}
-                />
-              </Stack>
-            ),
+            cards: [
+              <PokerCard
+                suit={Suits.Clubs}
+                value={CardValues.Ace}
+                scaleSize={0.5}
+                key={18}
+              />,
+              <PokerCard
+                suit={Suits.Hearts}
+                value={CardValues.King}
+                scaleSize={0.5}
+                key={188}
+                tilt
+              />,
+            ],
           }}
           river={
             <Stack direction={'row'} spacing={1}>

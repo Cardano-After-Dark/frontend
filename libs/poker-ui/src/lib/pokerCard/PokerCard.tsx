@@ -33,6 +33,7 @@ export type CardProps = {
   value?: CardValues;
   scaleSize?: number;
   hidden?: boolean;
+  tilt?: boolean;
 };
 
 export function PokerCard({
@@ -40,6 +41,7 @@ export function PokerCard({
   value,
   scaleSize = 1,
   hidden = false,
+  tilt = false,
 }: CardProps) {
   const [suitImage, setSuitImage] = useState<string>();
   const [showBack, setShowBack] = useState(false);
@@ -73,13 +75,22 @@ export function PokerCard({
     <Paper
       elevation={3}
       sx={{
-        width: scaleSize * 100,
-        height: scaleSize * 140,
+        width: {
+          xs: scaleSize * 70,
+          sm: scaleSize * 85,
+          md: scaleSize * 100,
+        },
+        height: {
+          xs: scaleSize * 1.4 * 70,
+          sm: scaleSize * 1.4 * 85,
+          md: scaleSize * 1.4 * 100,
+        },
         position: 'relative',
         color:
           suit === Suits.Diamonds || suit === Suits.Hearts
             ? '#dd2f45'
             : '#292f33',
+        transform: tilt ? 'rotate(20deg)' : '',
       }}
     >
       {suitImage && !showBack && (
