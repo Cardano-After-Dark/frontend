@@ -79,13 +79,13 @@ export function PokerCard({
           xs: scaleSize * 70,
           sm: scaleSize * 85,
           md: scaleSize * 100,
-          lg: scaleSize * 140,
+          lg: scaleSize * 160,
         },
         height: {
           xs: scaleSize * 1.4 * 70,
           sm: scaleSize * 1.4 * 85,
           md: scaleSize * 1.4 * 100,
-          lg: scaleSize * 1.4 * 140,
+          lg: scaleSize * 1.4 * 160,
         },
         position: 'relative',
         color:
