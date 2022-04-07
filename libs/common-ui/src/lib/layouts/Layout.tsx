@@ -1,7 +1,6 @@
 import { LayoutWrapper, MainContent } from './Layout.style';
 
 import Navigation from '../navagation/Navagation';
-import Footer from '../footer/Footer';
 
 export type LayoutProps = {
   children: React.ReactChild;
@@ -10,7 +9,7 @@ export type LayoutProps = {
 export const Layout = ({ children }: LayoutProps) => (
   <LayoutWrapper>
     <MainContent>{children}</MainContent>
-    <Footer />
+    <Navigation />
   </LayoutWrapper>
 );
 

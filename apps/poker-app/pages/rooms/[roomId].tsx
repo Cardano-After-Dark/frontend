@@ -95,13 +95,13 @@ export function PokerRoom() {
               <PokerCard
                 suit={Suits.Clubs}
                 value={CardValues.Ace}
-                scaleSize={0.5}
+                scaleSize={0.6}
                 key={18}
               />,
               <PokerCard
                 suit={Suits.Hearts}
                 value={CardValues.King}
-                scaleSize={0.5}
+                scaleSize={0.6}
                 key={188}
                 tilt
               />,
@@ -112,27 +112,27 @@ export function PokerRoom() {
               <PokerCard
                 suit={Suits.Clubs}
                 value={CardValues.Ace}
-                scaleSize={0.6}
+                scaleSize={0.7}
               />
               <PokerCard
                 suit={Suits.Hearts}
                 value={CardValues.King}
-                scaleSize={0.6}
+                scaleSize={0.7}
               />
               <PokerCard
                 suit={Suits.Diamonds}
                 value={CardValues.Eight}
-                scaleSize={0.6}
+                scaleSize={0.7}
               />
               <PokerCard
                 suit={Suits.Spades}
                 value={CardValues.Seven}
-                scaleSize={0.6}
+                scaleSize={0.7}
               />
               <PokerCard
                 suit={Suits.Diamonds}
                 value={CardValues.Eight}
-                scaleSize={0.6}
+                scaleSize={0.7}
               />
             </Stack>
           }

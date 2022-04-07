@@ -17,7 +17,6 @@ export const Navigation = () => {
 
   return (
     <AppBar
-      position="static"
       sx={{
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
       }}

@@ -9,7 +9,10 @@ export function River({ children }: RiverProps) {
   return (
     <Box
       sx={{
-        border: `3px solid rgba(255, 255, 255, 0.2)`,
+        border: {
+          xs: 'none',
+          sm: `3px solid rgba(255, 255, 255, 0.2)`,
+        },
         position: 'absolute',
         padding: '5px',
         top: '50%',

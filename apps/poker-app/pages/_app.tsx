@@ -9,6 +9,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Welcome to poker-app!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="app">
         <ThemeProvider theme={theme}>
