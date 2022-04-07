@@ -2,7 +2,7 @@ import { styled } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { Hand } from './hand/Hand';
-import { Player, Seats } from './player/Player';
+import { PlayerHand, Seats } from './playerHand/PlayerHand';
 import River from './river/River';
 
 export type Player = {
@@ -58,25 +58,25 @@ export function PokerTable({ river, hand, players }: PokerTableProps) {
       <River>{river}</River>
       <Hand player={hand} />
       {players.length >= 1 && (
-        <Player player={players[0]} position={Seats.Seat1} />
+        <PlayerHand player={players[0]} position={Seats.Seat1} />
       )}
       {players.length >= 2 && (
-        <Player player={players[1]} position={Seats.Seat3} />
+        <PlayerHand player={players[1]} position={Seats.Seat3} />
       )}
       {players.length >= 3 && (
-        <Player player={players[2]} position={Seats.Seat5} />
+        <PlayerHand player={players[2]} position={Seats.Seat5} />
       )}
       {players.length >= 4 && (
-        <Player player={players[3]} position={Seats.Seat2} />
+        <PlayerHand player={players[3]} position={Seats.Seat2} />
       )}
       {players.length >= 5 && (
-        <Player player={players[4]} position={Seats.Seat4} />
+        <PlayerHand player={players[4]} position={Seats.Seat4} />
       )}
       {players.length >= 6 && (
-        <Player player={players[5]} position={Seats.Seat6} />
+        <PlayerHand player={players[5]} position={Seats.Seat6} />
       )}
       {players.length >= 7 && (
-        <Player player={players[6]} position={Seats.Seat7} />
+        <PlayerHand player={players[6]} position={Seats.Seat7} />
       )}
     </PokerTableContainer>
   );

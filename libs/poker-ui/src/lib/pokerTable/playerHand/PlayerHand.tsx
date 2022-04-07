@@ -142,7 +142,7 @@ const playerPositions = [
   },
 ];
 
-export function Player({ position, player }: PlayerProps) {
+export function PlayerHand({ position, player }: PlayerProps) {
   const { cards, name, bank, bet } = player;
   return (
     <Box
@@ -180,4 +180,4 @@ export function Player({ position, player }: PlayerProps) {
   );
 }
 
-export default Player;
+export default PlayerHand;

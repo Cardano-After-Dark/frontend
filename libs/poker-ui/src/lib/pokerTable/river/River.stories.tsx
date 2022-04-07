@@ -1,12 +1,12 @@
 import { Story, Meta } from '@storybook/react';
-import { PokerCard } from './PokerCard';
+import { River } from './River';
 
 export default {
-  component: PokerCard,
-  title: 'PokerCard',
+  component: River,
+  title: 'River',
 } as Meta;
 
-const Template: Story = (args) => <div>hi</div>;
+const Template: Story = (args) => <River {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {};

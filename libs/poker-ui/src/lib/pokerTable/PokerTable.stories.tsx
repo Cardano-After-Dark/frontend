@@ -3,22 +3,10 @@ import { PokerTable } from './PokerTable';
 
 export default {
   component: PokerTable,
-  title: 'Table',
-  argTypes: {
-    river: {
-      description: 'The River',
-    },
-    players: {
-      description: 'Information about the other players',
-    },
-  },
+  title: 'PokerTable',
 } as Meta;
 
-const Template: Story = (args) => (
-  <PokerTable river={args['river']} players={args['players']} {...args} />
-);
+const Template: Story = (args) => <PokerTable {...args} />;
 
 export const Primary = Template.bind({});
-Primary.args = {
-  river: <div>River</div>,
-};
+Primary.args = {};
