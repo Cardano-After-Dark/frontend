@@ -33,12 +33,12 @@ export function Hand({ player }: HandProps) {
       <Box
         sx={{
           height: '100%',
-          marginLeft: '5px',
-          padding: '5px',
+          marginLeft: '10px',
+          padding: '20px',
         }}
       >
         <Typography variant="h5">{name}</Typography>
-        <Box>{bank}</Box>
+        <Typography variant="subtitle1">{bank}</Typography>
       </Box>
     </Box>
   );

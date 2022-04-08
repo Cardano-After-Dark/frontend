@@ -50,6 +50,8 @@ export function PokerCard({
     if (hidden || suit === undefined || value === undefined) {
       setShowBack(true);
       return;
+    } else {
+      setShowBack(false);
     }
 
     switch (suit) {
