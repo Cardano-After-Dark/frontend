@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { Stack } from '@mui/material';
 import { Story, Meta } from '@storybook/react';
 import PokerCard, { CardValues, Suits } from '../pokerCard/PokerCard';
