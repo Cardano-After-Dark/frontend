@@ -1,4 +1,4 @@
-import { theme } from '@after-dark-app/common-ui';
+import { theme } from '../../theme';
 import { Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Bet, BetPosition } from '../bet/Bet';

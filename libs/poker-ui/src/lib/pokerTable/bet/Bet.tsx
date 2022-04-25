@@ -1,5 +1,5 @@
-import { theme } from '@after-dark-app/common-ui';
 import { Chip } from '@mui/material';
+import { theme } from '../../theme';
 
 export enum BetPosition {
   Left,

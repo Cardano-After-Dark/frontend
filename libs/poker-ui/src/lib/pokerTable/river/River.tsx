@@ -1,4 +1,4 @@
-import { theme } from '@after-dark-app/common-ui';
+import { theme } from '../../theme';
 import { Box } from '@mui/system';
 
 type RiverProps = {

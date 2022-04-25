@@ -1,7 +1,7 @@
 import { Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Clubs, Diamonds, Hearts, Icon, Spades } from '@after-dark-app/images';
+import { Clubs, Diamonds, Hearts, Icon, Spades } from '../suits';
 import { Box } from '@mui/system';
 
 export enum Suits {
@@ -43,7 +43,7 @@ export function PokerCard({
   hidden = false,
   tilt = false,
 }: CardProps) {
-  const [suitImage, setSuitImage] = useState<string>();
+  const [suitImage, setSuitImage] = useState<string | any>();
   const [showBack, setShowBack] = useState(false);
 
   useEffect(() => {
