@@ -1,4 +1,4 @@
-import { LayoutWrapper, MainContent } from './Layout.style';
+import { LayoutWrapper, MainContent, MainFooter } from './Layout.style';
 
 import Navigation from '../navagation/Navagation';
 
@@ -9,7 +9,9 @@ export type LayoutProps = {
 export const Layout = ({ children }: LayoutProps) => (
   <LayoutWrapper>
     <MainContent>{children}</MainContent>
-    <Navigation />
+    <MainFooter>
+      <Navigation />
+    </MainFooter>
   </LayoutWrapper>
 );
 

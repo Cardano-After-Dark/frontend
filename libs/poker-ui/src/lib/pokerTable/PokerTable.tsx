@@ -1,9 +1,5 @@
 import { styled } from '@mui/material';
-import { Box } from '@mui/system';
-import React from 'react';
-import { Hand } from './hand/Hand';
-import { PlayerHand, Seats } from './playerHand/PlayerHand';
-import River from './river/River';
+import React, { ReactNode } from 'react';
 
 export type Player = {
   cards?: React.ReactNode[];
@@ -14,9 +10,7 @@ export type Player = {
 };
 
 type PokerTableProps = {
-  river: React.ReactChild;
-  hand: Player;
-  players: Player[];
+  children: ReactNode;
 };
 
 export const PokerTableContainer = styled('div')`
@@ -52,34 +46,8 @@ export const PokerTableContainer = styled('div')`
   }
 `;
 
-export function PokerTable({ river, hand, players }: PokerTableProps) {
-  return (
-    <PokerTableContainer>
-      <River>{river}</River>
-      <Hand player={hand} />
-      {players.length >= 1 && (
-        <PlayerHand player={players[0]} position={Seats.Seat1} />
-      )}
-      {players.length >= 2 && (
-        <PlayerHand player={players[1]} position={Seats.Seat3} />
-      )}
-      {players.length >= 3 && (
-        <PlayerHand player={players[2]} position={Seats.Seat5} />
-      )}
-      {players.length >= 4 && (
-        <PlayerHand player={players[3]} position={Seats.Seat2} />
-      )}
-      {players.length >= 5 && (
-        <PlayerHand player={players[4]} position={Seats.Seat4} />
-      )}
-      {players.length >= 6 && (
-        <PlayerHand player={players[5]} position={Seats.Seat6} />
-      )}
-      {players.length >= 7 && (
-        <PlayerHand player={players[6]} position={Seats.Seat7} />
-      )}
-    </PokerTableContainer>
-  );
+export function PokerTable({ children }: PokerTableProps) {
+  return <PokerTableContainer>{children}</PokerTableContainer>;
 }
 
 export default PokerTable;

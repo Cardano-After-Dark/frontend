@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const MainContent = styled.main`
   padding: 20px;
+  padding-bottom: 0;
   min-height: 550px;
   min-width: 350px;
   grid-area: main;
@@ -14,6 +15,10 @@ export const LayoutWrapper = styled.section`
   background-size: cover;
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: auto 50px;
+  grid-template-rows: auto 100px;
   grid-template-areas: 'main' 'footer';
+`;
+
+export const MainFooter = styled.footer`
+  grid-area: footer;
 `;

@@ -10,19 +10,14 @@ import {
 import Image from 'next/image';
 
 export const Navigation = () => {
-  const isScrolled = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 20,
-  });
-
   return (
-    <AppBar
+    <Box
       sx={{
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        color: 'rgba(255, 255, 255)',
       }}
     >
       <Container maxWidth="xl">
-        <Stack direction={'row'} justifyContent="start" alignItems="center">
+        <Stack direction={'row'} justifyContent="center" alignItems="center">
           <Box
             position={'relative'}
             width={100}
@@ -34,7 +29,7 @@ export const Navigation = () => {
           <Typography variant="h3">Cardano After Dark</Typography>
         </Stack>
       </Container>
-    </AppBar>
+    </Box>
   );
 };
 
