@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'common-ui',
+/* eslint-disable */
+export default {
+  displayName: 'utilities',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/common-ui',
+  coverageDirectory: '../../coverage/libs/utilities',
 };

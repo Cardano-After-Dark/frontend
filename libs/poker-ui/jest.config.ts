@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'poker-engine',
+/* eslint-disable */
+export default {
+  displayName: 'poker-ui',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/poker-engine',
+  coverageDirectory: '../../coverage/libs/poker-ui',
 };

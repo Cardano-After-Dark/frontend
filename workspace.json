@@ -2,13 +2,11 @@
   "version": 2,
   "projects": {
     "common-ui": "libs/common-ui",
-    "common-ui-e2e": "apps/common-ui-e2e",
     "images": "libs/images",
     "poker-app": "apps/poker-app",
     "poker-app-e2e": "apps/poker-app-e2e",
     "poker-engine": "libs/poker-engine",
     "poker-ui": "libs/poker-ui",
-    "poker-ui-e2e": "apps/poker-ui-e2e",
     "utilities": "libs/utilities"
   }
 }

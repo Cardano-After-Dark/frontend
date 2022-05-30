@@ -1,5 +1,4 @@
 {
-  "root": "apps/poker-app-e2e",
   "sourceRoot": "apps/poker-app-e2e/src",
   "projectType": "application",
   "targets": {

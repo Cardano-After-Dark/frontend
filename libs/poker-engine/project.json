@@ -1,5 +1,4 @@
 {
-  "root": "libs/poker-engine",
   "sourceRoot": "libs/poker-engine/src",
   "projectType": "library",
   "tags": [],
@@ -15,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/poker-engine"],
       "options": {
-        "jestConfig": "libs/poker-engine/jest.config.js",
+        "jestConfig": "libs/poker-engine/jest.config.ts",
         "passWithNoTests": true
       }
     }

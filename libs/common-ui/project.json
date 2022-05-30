@@ -1,5 +1,4 @@
 {
-  "root": "libs/common-ui",
   "sourceRoot": "libs/common-ui/src",
   "projectType": "library",
   "tags": [],
@@ -15,39 +14,8 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/common-ui"],
       "options": {
-        "jestConfig": "libs/common-ui/jest.config.js",
+        "jestConfig": "libs/common-ui/jest.config.ts",
         "passWithNoTests": true
-      }
-    },
-    "storybook": {
-      "executor": "@nrwl/storybook:storybook",
-      "options": {
-        "uiFramework": "@storybook/react",
-        "port": 4400,
-        "config": {
-          "configFolder": "libs/common-ui/.storybook"
-        }
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
-      }
-    },
-    "build-storybook": {
-      "executor": "@nrwl/storybook:build",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "uiFramework": "@storybook/react",
-        "outputPath": "dist/storybook/common-ui",
-        "config": {
-          "configFolder": "libs/common-ui/.storybook"
-        }
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
       }
     }
   }

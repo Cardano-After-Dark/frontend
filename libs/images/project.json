@@ -1,5 +1,4 @@
 {
-  "root": "libs/images",
   "sourceRoot": "libs/images/src",
   "projectType": "library",
   "tags": [],
@@ -15,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/images"],
       "options": {
-        "jestConfig": "libs/images/jest.config.js",
+        "jestConfig": "libs/images/jest.config.ts",
         "passWithNoTests": true
       }
     }
