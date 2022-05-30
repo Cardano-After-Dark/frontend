@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "common-ui": "libs/common-ui",
+    "desktop-app": "apps/desktop-app",
     "images": "libs/images",
     "poker-app": "apps/poker-app",
     "poker-app-e2e": "apps/poker-app-e2e",
