@@ -6,8 +6,7 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "storybook:common-ui": "nx run common-ui:storybook",
-    "storybook:poker-ui": "nx run poker-ui:storybook"
+    "start:desktop": "nx serve desktop-app"
   },
   "private": true,
   "dependencies": {
