@@ -10,9 +10,52 @@ import {
 } from '@after-dark-app/poker-ui';
 import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { PokerPlayer, GENERATED_KEYS, PlayerAgent } from 'zkpoker';
+
+export class Sim{
+
+  player0: PokerPlayer;
+  player1: PokerPlayer;
+  player2: PokerPlayer;
+
+
+  async simulate(){
+  
+    //   // First, we instantiate the players
+    this.player0 = new PokerPlayer({ name: "astrid", stake: 1_000_000_000 }, GENERATED_KEYS);
+    this.player1 = new PokerPlayer({ name: "bette", stake: 1_000_000_000 }, GENERATED_KEYS);
+    this.player2 = new PokerPlayer({ name: "carla", stake: 1_000_000_000 }, GENERATED_KEYS);
+    
+    // log(`\n=== Test Simulation Start ===\n`);
+    // log(` >>> ${player0.name} ${player2.name} ${player2.name} `)
+    
+    const publicInfo0 = await this.player0.getPublicInfo();
+    const publicInfo1 = await this.player1.getPublicInfo();
+    const publicInfo2 = await this.player2.getPublicInfo();
+    const allPublicInfo = [publicInfo0, publicInfo1, publicInfo2];
+
+        // // Each Agent initialized per Player, with reference to all participants, by publicInfo
+        // let pa0 = new PlayerAgent(player0, allPublicInfo);
+        // let pa1 = new PlayerAgent(player1, allPublicInfo);
+        // let pa2 = new PlayerAgent(player2, allPublicInfo);
+  }
+
+}
+
 
 export function PokerRoom() {
   const router = useRouter();
+
+  const sim: Sim = new Sim();
+  sim.simulate();
+
+  // const [pokerState, updatePokerState] = useState<PokerState>(null)
+  //   useEffect(async () => {
+  //   // ...simulate function...
+  //   // on state change: updatePokerState
+  // });
+
 
   const roomId = router.query.roomId;
 
@@ -56,7 +99,7 @@ export function PokerRoom() {
           </River>
           <Hand
             player={{
-              name: 'david',
+              name: sim.player0.name,
               bank: 320,
               bet: 2300,
               cards: [
