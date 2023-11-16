@@ -1,0 +1,59 @@
+/* styles.module.css */
+
+
+.betButton {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.1s ease;
+}
+
+.betButton:hover {
+    background: #006bdd;
+}
+
+.betButton:active {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    /* Add a box shadow on click */
+}
+
+.foldButton {
+    background: rgb(215, 121, 121);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.1s ease;
+}
+
+.foldButton:hover {
+    background: rgb(200, 106, 106);
+}
+
+.foldButton:active {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    /* Add a box shadow on click */
+}
+
+.defaultButton {
+    background: rgb(113, 108, 108);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.1s ease;
+}
+
+.defaultButton:hover {
+    background: rgb(98, 93, 90);
+}
+
+.defaultButton:active {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    /* Add a box shadow on click */
+}
