@@ -1,8 +1,9 @@
-import { PokerPlayer, GENERATED_KEYS, PlayerAgent, CommChannel, TableState } from 'zkpoker';
+import { PokerPlayer, GENERATED_KEYS, PlayerAgent, CommChannel, TableState, GameState } from 'zkpoker';
 export class Sim{
 
     status: string;
-    cardReveal?: string;
+
+    nextLoadingDescription: string;
 
     player0: PokerPlayer;
     player1: PokerPlayer;
@@ -19,25 +20,9 @@ export class Sim{
 
     currRound: number;
 
+    ownerGameState: GameState;
+
     constructor(){
-
-        this.status = 'setup';
-        this.init();
-        
-    }
-
-    private async init(){
-
-        this.player0 = new PokerPlayer({ name: "astrid", stake: 1_000_000_000 }, GENERATED_KEYS);
-        this.player1 = new PokerPlayer({ name: "bette", stake: 1_000_000_000 }, GENERATED_KEYS);
-        this.player2 = new PokerPlayer({ name: "carla", stake: 1_000_000_000 }, GENERATED_KEYS);
-
-        await this.setupAgents();
-        await this.setupCommChannel();
-        await this.setupKeys();
-
-        this.status = 'setupComplete'
-         
 
         this.ownerTableView = {
             holeCards: [],
@@ -46,6 +31,21 @@ export class Sim{
             riverCard: undefined,
         } as TableState;
 
+        this.status = 'SETUP_COMPLETE';
+        this.nextLoadingDescription = "Adding players...";
+    }
+
+    async addPlayers(){
+
+        this.player0 = new PokerPlayer({ name: "astrid", stake: 1_000 }, GENERATED_KEYS);
+        this.player1 = new PokerPlayer({ name: "bette", stake: 1_000 }, GENERATED_KEYS);
+        this.player2 = new PokerPlayer({ name: "carla", stake: 1_000 }, GENERATED_KEYS);
+
+        await this.setupAgents();
+        await this.setupCommChannel();
+
+        this.status = "PLAYERS_ADDED";
+        this.nextLoadingDescription = "Generating keys..."    
     }
 
     private async setupAgents(){
@@ -62,6 +62,7 @@ export class Sim{
         this.allPlayerAgents = [this.pa0, this.pa1, this.pa2];
 
         this.ownerAgent = this.pa0;
+        this.ownerGameState = this.ownerAgent.state;
 
     }
 
@@ -70,7 +71,7 @@ export class Sim{
         cc.setupAgentComms([this.pa0, this.pa1, this.pa2]);
     }
 
-    private async setupKeys(){
+    async setupKeys(){
 
         await Promise.all([
             this.pa0.broadcastPublicShare(),
@@ -84,19 +85,64 @@ export class Sim{
             this.pa2.setupGroupPublicKey()
         ])
 
+        this.status = "KEYS_GENERATED"
+        this.nextLoadingDescription = "Shuffling deck..."  
     }
 
     async setupCards(){
-
-        this.status = "setupCards"
 
         await this.pa0.createDeck();
         await this.pa1.shuffleAndRerandomize();
         await this.pa2.shuffleAndRerandomize();
 
-        this.status = "setupCardsComplete"
+        await Promise.all([ 
+            this.pa0.waitForDeckReady(),
+            this.pa1.waitForDeckReady(),
+            this.pa2.waitForDeckReady()
+        ])
 
+        await Promise.all([
+            // blocked untill all three players have shuffled and rerandomized 
+            this.pa0.holeCardDecryption(),
+            this.pa1.holeCardDecryption(),
+            this.pa2.holeCardDecryption()
+        ])
+
+        await Promise.all([
+            this.pa0.reconstructHoleCards(),
+            this.pa1.reconstructHoleCards(),
+            this.pa2.reconstructHoleCards()
+        ])
+
+        this.ownerTableView = this.ownerAgent.tableView;
+
+        this.status = "CARD_SETUP_COMPLETE"
     }
+
+
+    async ownerBet(){
+        await this.pa0.doBetOnMyTurn(20);
+        this.ownerGameState = this.ownerAgent.state;
+    }
+
+    async playerBet(player: PlayerAgent){
+
+        await player.doBetOnMyTurn(20);
+
+        // Currently needed to allow for time to recieve bet message from other player to update the game controller. 
+        await new Promise(res => setTimeout(res, 100));
+        this.ownerGameState = this.ownerAgent.state;
+    }
+
+    async playerFold(player: PlayerAgent){
+
+        await player.doFoldOnMyTurn();
+
+        // Currently needed to allow for time to recieve bet message from other player to update the game controller. 
+        await new Promise(res => setTimeout(res, 100));
+        this.ownerGameState = this.ownerAgent.state;
+    }
+
 
     async constructHoleCards(){
 
@@ -111,58 +157,29 @@ export class Sim{
             this.pa1.reconstructHoleCards(),
             this.pa2.reconstructHoleCards()
         ])
-
-        this.updateTableState();
-        this.cardReveal = 'holdCards'
         
     }
 
-    async runSimulation(){
-
-        // await this.simBetting();
-        // await this.constructFlopCards();
-
-        // this.status = "flopComplete"
-
-        // await this.simBetting();
-        // await this.constructTurnCard();
-
-        // this.status = "turnComplete"
-
-        // await this.simBetting();
-        // await this.constructRiverCard();
-
-        // this.status = "riverComplete"
-
-        // await this.simBetting();
-    }
-
-    async advanceSimulation(){
+    async revealCards(){
 
         switch (this.ownerAgent.state.currRoundIndex) {
             case 1: 
-
-                this.status = 'flopCardsDecrypt'
                 await this.constructFlopCards();
-                this.status = 'flopCardsReveal'
-
                 break;
 
             case 2: 
                 await this.constructTurnCard();
-                this.cardReveal = 'turnCard'
-            break;
+                break;
       
             case 3: 
                 await this.constructRiverCard();
-                this.cardReveal = 'riverCard'
-            break;
+                break;
 
             default:
                 break;
         }
 
-        this.updateTableState()
+        // this.updateTableState()
 
     }
 
@@ -233,17 +250,23 @@ export class Sim{
     async ownerAgentBet(){
 
         this.status = 'ownerAgentTurnPending'
-        console.log('betting')
+        
+        await this.pa0.doBetOnMyTurn(20)
+
 
         await Promise.all([
             this.pa2.doBetOnMyTurn(20),
             this.pa1.doBetOnMyTurn(20),
-            this.pa0.doBetOnMyTurn(20),
+            // this.pa0.doBetOnMyTurn(20),
         ]);
 
-        console.log('bettingComplete')
+        await this.revealCards();
 
-        await this.advanceSimulation();
+        // await Promise.all([ 
+        //     this.pa0.waitForRoundComplete(0),
+        //     this.pa1.waitForRoundComplete(0),
+        //     this.pa2.waitForRoundComplete(0)
+        // ])
 
         this.status = 'simulationAdvanced'
 
@@ -259,21 +282,152 @@ export class Sim{
         ]);
         this.status = 'ownerAgentTurnComplete'
 
-        await this.advanceSimulation();
+        await this.revealCards();
 
         this.status = 'simulationAdvanced'
 
     }
 
-    private updateTableState(){
+    async runPreflop(){
+
+        await Promise.all([
+            // blocked untill all three players have shuffled and rerandomized 
+            this.pa0.holeCardDecryption(),
+            this.pa1.holeCardDecryption(),
+            this.pa2.holeCardDecryption()
+        ])
+
+        await Promise.all([
+            this.pa0.reconstructHoleCards(),
+            this.pa1.reconstructHoleCards(),
+            this.pa2.reconstructHoleCards()
+        ])
+
+        await Promise.all([
+            this.pa2.doBetOnMyTurn(20),
+            this.pa1.doBetOnMyTurn(20),
+            this.pa0.doBetOnMyTurn(20)
+        ]);
+
+        await Promise.all([ 
+            this.pa0.waitForRoundComplete(0),
+            this.pa1.waitForRoundComplete(0),
+            this.pa2.waitForRoundComplete(0)
+        ])
+
+        return { ...this, ownerTableView: this.ownerAgent.tableView };
+
+    }
+
+    async runSimulation(){
+    
+        // await Promise.all([
+        //     // blocked untill all three players have shuffled and rerandomized 
+        //     this.pa0.holeCardDecryption(),
+        //     this.pa1.holeCardDecryption(),
+        //     this.pa2.holeCardDecryption()
+        // ])
+
+        // await Promise.all([
+        //     this.pa0.reconstructHoleCards(),
+        //     this.pa1.reconstructHoleCards(),
+        //     this.pa2.reconstructHoleCards()
+        // ])
+
+        // await Promise.all([
+        //     this.pa2.doBetOnMyTurn(20),
+        //     this.pa1.doBetOnMyTurn(20),
+        //     this.pa0.doBetOnMyTurn(20)
+        // ]);
+
+        // await Promise.all([ 
+        //     this.pa0.waitForRoundComplete(0),
+        //     this.pa1.waitForRoundComplete(0),
+        //     this.pa2.waitForRoundComplete(0)
+        // ])
+
+        await Promise.all([
+            this.pa0.flopCardDecryption(),
+            this.pa1.flopCardDecryption(),
+            this.pa2.flopCardDecryption()
+        ])
         
-        this.ownerTableView = this.ownerAgent.tableView;
-        this.currRound = this.ownerAgent.state.currRoundIndex;
+        await Promise.all([
+            this.pa0.displayFlopCards(),
+            this.pa1.displayFlopCards(),
+            this.pa2.displayFlopCards()
+        ])
+            
+        await Promise.all([
+            this.pa0.doBetOnMyTurn(10),
+            this.pa1.doBetOnMyTurn(10),
+            this.pa2.doBetOnMyTurn(20),
+            this.pa0.doBetOnMyTurn(10),
+            this.pa1.doBetOnMyTurn(10),
+        ]);
 
-    }
+        await Promise.all([ 
+            this.pa0.waitForRoundComplete(1),
+            this.pa1.waitForRoundComplete(1),
+            this.pa2.waitForRoundComplete(1)
+        ])
 
-    get tableView():TableState{
-        return this.ownerTableView
+        await Promise.all([
+            this.pa0.turnCardDecryption(),
+            this.pa1.turnCardDecryption(),
+            this.pa2.turnCardDecryption()
+        ])
+
+        await Promise.all([
+            this.pa0.displayTurnCard(),
+            this.pa1.displayTurnCard(),
+            this.pa2.displayTurnCard()
+        ])
+
+        this.status = 'turnCardsReconstructed'
+
+        return { ...this, status: 'updated' };
+        
+        await Promise.all([
+            this.pa0.doBetOnMyTurn(10),
+            this.pa1.doBetOnMyTurn(10),
+            this.pa2.doBetOnMyTurn(10),
+        ]);
+
+        await Promise.all([ 
+            this.pa0.waitForRoundComplete(2),
+            this.pa1.waitForRoundComplete(2),
+            this.pa2.waitForRoundComplete(2)
+        ])
+
+        await Promise.all([
+            this.pa0.riverCardDecryption(),
+            this.pa1.riverCardDecryption(),
+            this.pa2.riverCardDecryption()
+        ])
+        
+        await Promise.all([
+            this.pa0.displayRiverCard(),
+            this.pa1.displayRiverCard(),
+            this.pa2.displayRiverCard()
+        ])
+
+        this.status = 'riverCardsReconstructed'
+        
+        await Promise.all([
+            this.pa1.doBetOnMyTurn(10),
+            this.pa0.doBetOnMyTurn(10),
+            this.pa2.doBetOnMyTurn(10)
+        ]);
+
+        await Promise.all([ 
+            this.pa0.waitForRoundComplete(3),
+            this.pa1.waitForRoundComplete(3),
+            this.pa2.waitForRoundComplete(3)
+        ])
+        console.log(this.pa0);
     }
+    
+
 
 }

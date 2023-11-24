@@ -143,18 +143,30 @@ const playerPositions = [
 ];
 
 export function PlayerHand({ position, player }: PlayerProps) {
-  const { cards, name, bank, bet } = player;
+  const { cards, name, bank, bet, turn } = player;
+
   return (
     <Box
-      sx={{
-        borderRadius: 3,
+      sx={{borderRadius: 3,
         padding: '5px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        background: 'rgba(255, 255, 255, 0.2)',
+        background: turn ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.2)',
+        border: turn ? '5px solid rgba(245, 16, 16, 0.75)' : '5px solid rgba(255, 255, 255, 0.05)',
         ...playerPositions[position].player,
+        ...(turn && {
+          animation: 'flash 2.5s infinite',
+          '@keyframes flash': {
+            '0%, 100%': {
+              borderColor: 'rgba(255, 255, 255, 0.05)',
+            },
+            '50%': {
+              borderColor: 'rgba(245, 16, 16, 0.75)',
+            },
+          },
+        })
       }}
     >
       {bet && <Bet amount={bet} position={playerPositions[position].bet} />}

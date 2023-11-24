@@ -1,25 +1,15 @@
-/* styles.module.css */
-
 .actionPanelContainer {
     background-color: #d3d2d2;
-    /* Add your desired background color */
     border-radius: 5px;
     padding: 10px;
-    /* Adjust padding as needed */
     display: flex;
     justify-content: space-between;
-    /* Separate the buttons with space */
     position: fixed;
-    /* Use fixed positioning to make it relative to the viewport */
     bottom: 30px;
-    /* Add space to the bottom */
     right: 30px;
-    /* Add space to the right */
     z-index: 999;
-    /* Ensure a high z-index to place it on top of other components */
 }
 
 .actionButtonWrapper {
     margin: 10px;
-    /* Add margin to create space around each button */
 }

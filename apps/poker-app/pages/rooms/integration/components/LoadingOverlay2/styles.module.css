@@ -1,0 +1,58 @@
+/* src/components/LoadingOverlay.module.css */
+.overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    border-radius: 8px;
+  }
+  
+  .cardLoader {
+    display: flex;
+    gap: 8px;
+    align-items: center; /* Align cards in the center */
+
+    /* animation: shuffle 1s infinite; Add the shuffle animation */
+  }
+  
+  .card {
+    /* width: 60px;
+    height: 90px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px; */
+    animation: shuffle 1s infinite; /* Add the shuffle animation */
+  }
+  
+  .text {
+    font-size: 20px;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  @keyframes shuffle {
+    0% {
+      transform: translateY(0);
+    }
+    25% {
+      transform: translateY(-10px) rotate(10deg);
+    }
+    50% {
+      transform: translateY(0) rotate(0deg);
+    }
+    75% {
+      transform: translateY(10px) rotate(-10deg);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  

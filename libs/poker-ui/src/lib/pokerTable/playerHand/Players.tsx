@@ -7,6 +7,7 @@ export type PlayerConfig = {
   bet?: number;
   name?: string;
   bank?: number;
+  turn?: boolean;
 };
 
 type PlayersProps = {

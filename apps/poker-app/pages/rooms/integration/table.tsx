@@ -9,7 +9,17 @@ import {
 } from '@after-dark-app/poker-ui';
 import { Box, Stack } from '@mui/material';
 
+import { PlayerState } from 'zkpoker';
+
 export const Table = (props) => {
+
+    const ownerPlayer: PlayerState = props.props.gameProps?.players.find((_, index) => index == props.props.gameProps?.thisPlayerIndex)
+
+    const otherPlayers: PlayerState [] = props.props.gameProps?.players.filter((_, index) => index != props.props.gameProps?.thisPlayerIndex)
+
+    const ownerTurn: boolean = props.props.gameProps?.currPlayerIndex == props.props.gameProps?.thisPlayerIndex
+
+    const playerTurnByPubKey: string = props.props.gameProps?.players[props.props.gameProps?.currPlayerIndex].playerPubKey;
 
     const cardValueMap = {
         "A": CardValues.Ace,
@@ -106,8 +116,41 @@ export const Table = (props) => {
                 tilt={index === 1}
             />
         )
-
     })
+
+    const ownerHand = ownerPlayer ? (
+        <Hand
+            player={{
+                name: ownerPlayer.playerName,
+                bank: ownerPlayer.playerGameStack,
+                bet: ownerPlayer.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet == 0 ? null : ownerPlayer.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet,
+                // bet: 1,
+                cards: renderHoleCards,
+                turn: !(Array.isArray(renderHoleCards) && renderHoleCards.length === 0) && ownerTurn
+            }}
+        />
+    ) : null;
+
+    const otherPlayerHands = otherPlayers ? (
+        <Players
+                players={otherPlayers.map(function (player, index) {
+
+                    const thisPlayerTurn: boolean = player.playerPubKey == playerTurnByPubKey;
+                    
+                    return {
+                        name: player.playerName,
+                        bank: player.playerGameStack,
+                        bet: player.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet == 0 ? null : player.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet,
+                        // bet: 1,
+                        cards: (Array.isArray(renderHoleCards) && renderHoleCards.length === 0) || !player.playerHandActive? [] : [
+                            <PokerCard scaleSize={0.5} key={`${index}-1`} />,
+                            <PokerCard scaleSize={0.5} key={`${index}-2`} tilt />, 
+                        ],
+                        turn: thisPlayerTurn
+                    }
+                })}
+            />
+    ) : null
 
     const communityCards = [
         ...(flopCards ? [...flopCards] : []),
@@ -122,81 +165,8 @@ export const Table = (props) => {
                     {communityCards}
                 </Stack>
             </River>
-            <Hand
-                player={{
-                    name: 'alice',
-                    bank: 320,
-                    bet: 2300,
-                    cards: renderHoleCards
-                }}
-            />
-            <Players
-                players={[
-                    {
-                        name: 'Henry',
-                        bank: 890,
-                        bet: 1300,
-                        cards: [
-                            <PokerCard scaleSize={0.5} key={1} />,
-                            <PokerCard scaleSize={0.5} key={11} tilt />,
-                        ],
-                    },
-                    {
-                        name: 'Henry2',
-                        bank: 890,
-                        bet: 1300,
-                        cards: [
-                            <PokerCard scaleSize={0.5} key={12} />,
-                            <PokerCard scaleSize={0.5} key={122} tilt />,
-                        ],
-                    },
-                    //   {
-                    //     name: 'Henry',
-                    //     bank: 890,
-                    //     bet: 1300,
-                    //     cards: [
-                    //       <PokerCard scaleSize={0.5} key={13} />,
-                    //       <PokerCard scaleSize={0.5} key={133} tilt />,
-                    //     ],
-                    //   },
-                    //   {
-                    //     name: 'Henry',
-                    //     bank: 890,
-                    //     bet: 1300,
-                    //     cards: [
-                    //       <PokerCard scaleSize={0.5} key={14} />,
-                    //       <PokerCard scaleSize={0.5} key={144} tilt />,
-                    //     ],
-                    //   },
-                    //   {
-                    //     name: 'Henry',
-                    //     bank: 890,
-                    //     bet: 200,
-                    //     cards: [
-                    //       <PokerCard scaleSize={0.5} key={15} />,
-                    //       <PokerCard scaleSize={0.5} key={155} tilt />,
-                    //     ],
-                    //   },
-                    //   {
-                    //     name: 'Henry',
-                    //     bank: 890,
-                    //     bet: 200,
-                    //     cards: [
-                    //       <PokerCard scaleSize={0.5} key={16} />,
-                    //       <PokerCard scaleSize={0.5} key={166} tilt />,
-                    //     ],
-                    //   },
-                    //   {
-                    //     name: 'Henry',
-                    //     bank: 890,
-                    //     bet: 200,
-                    //     cards: [
-                    //       <PokerCard scaleSize={0.5} key={17} />,
-                    //       <PokerCard scaleSize={0.5} key={177} tilt />,
-                    //     ],
-                    //   },
-                ]}
-            />
+            {ownerHand}
+            {otherPlayerHands}
         </PokerTable>
     );
 

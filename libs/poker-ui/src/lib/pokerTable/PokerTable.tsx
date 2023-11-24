@@ -7,6 +7,7 @@ export type Player = {
   bet?: number;
   name?: string;
   bank?: number;
+  turn?: boolean;
 };
 
 type PokerTableProps = {
