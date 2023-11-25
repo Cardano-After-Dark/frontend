@@ -21,13 +21,13 @@ export const PokerTableContainer = styled('div')`
   left: 0;
   right: 0;
   background-color: #4aad4a;
-  border-radius: 150px;
+  border-radius: 200px;
   border: 15px solid #a95555;
   &:before {
     content: '';
     border: 7px solid rgba(0, 0, 0, 0.1);
     display: block;
-    border-radius: 150px;
+    border-radius: 200px;
     position: absolute;
     top: -15px;
     left: -15px;
@@ -38,7 +38,7 @@ export const PokerTableContainer = styled('div')`
     content: '';
     border: 7px solid rgba(0, 0, 0, 0.1);
     display: block;
-    border-radius: 130px;
+    border-radius: 180px;
     position: absolute;
     top: 0;
     left: 0;

@@ -32,7 +32,6 @@ const PokerGame: React.FC = () => {
     const handelFold = async () => {
         await simulation.playerFold(simulation.allPlayerAgents[simulation.ownerGameState.currPlayerIndex])
 
-        // await simulation.ownerBet();
         const updatedGameState = { ...simulation.ownerGameState, currPlayerIndex: simulation.ownerGameState.currPlayerIndex } as GameState
 
         setGameProps(updatedGameState);
@@ -42,8 +41,12 @@ const PokerGame: React.FC = () => {
 
         await simulation.playerBet(simulation.allPlayerAgents[simulation.ownerGameState.currPlayerIndex])
 
-        // await simulation.ownerBet();
-        const updatedGameState = { ...simulation.ownerGameState, currPlayerIndex: simulation.ownerGameState.currPlayerIndex } as GameState
+        if (simulation.ownerGameState.currPlayerIndex == simulation.allPlayerAgents.length){
+            // await simulation.completeRound(simulation.ownerGameState.currRoundIndex)
+        }
+
+
+        const updatedGameState = { ...simulation.ownerGameState, currPlayerIndex: simulation.ownerGameState.currPlayerIndex, currRoundIndex: simulation.ownerGameState.currRoundIndex} as GameState
 
         setGameProps(updatedGameState);
 
@@ -80,85 +83,6 @@ const PokerGame: React.FC = () => {
     useEffect(() => {
         setCardProps(simulation.ownerTableView)
     }, [simulation.ownerTableView]);
-
-
-    // useEffect(() => {
-    //     const handleUpdate = async () => {
-    //         switch (simulation.status) {
-    //             case "setup":
-    //                 const setupUpdatedSimulation = await simulation.addPlayers();
-    //                 setSimulation(setupUpdatedSimulation);
-    //                 setLoadingDescription(setupUpdatedSimulation.status)
-    //                 break;
-    
-    //             case "playersAdded":
-    //                 // const playersAddedUpdatedSimulation = await simulation.setupKeys();
-    //                 // setSimulation(playersAddedUpdatedSimulation);
-    //                 // setLoadingDescription(simulation.status)
-    //                 break;
-    
-    //             // Add more cases as needed
-    //             default:
-    //                 break;
-    //         }
-    //     };
-    
-    //     handleUpdate();
-    // }, [simulation.status]);
-
-    // const updateCardProp = () => {
-    //     setCardProps(simRef.current.ownerTableView);
-    // }
-
-    // useEffect(() => {
-
-    //     switch (simulation.status) {
-    //         case "setupComplete":
-    //             simulation.setupCards().then(()=>{
-    //                 simulation.runSimulation();
-    //             });
-    //             break;
-
-    //         case "setupCardsComplete":
-    //             simulation.constructHoleCards();
-    //             break;
-
-    //         default:
-    //             break;
-    //     }
-
-    // }, [simulation]);
-
-
-
-    // useEffect(() => {
-
-    //     setCardProps(simulation.ownerTableView)
-
-    // }, [simulation.ownerTableView]);
-
-
-    // useEffect(()=>{
-    //     const isEmptyObj = (obj) => {
-    //       return Object.keys(obj).length === 0;
-    //     };
-      
-    //     const isEmptyArr = (Arr) => {
-    //         return Arr.length === 0;
-    //     };
-
-    //     if (simRef.current.ownerGameState) {
-    //         setGamePropsLoaded(true)
-    //     }
-    
-    //   })
-
-    //   useEffect(()=>{
-    //     console.log(gamePropsLoaded)
-    //     setGameProps(simRef.current.ownerGameState)
-    //   })
-
-      
 
     return (
         <>

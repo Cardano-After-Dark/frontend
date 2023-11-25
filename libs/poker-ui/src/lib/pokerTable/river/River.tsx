@@ -1,11 +1,13 @@
 import { theme } from '../../theme';
 import { Box } from '@mui/system';
+import React, { ReactNode } from 'react';
+
 
 type RiverProps = {
-  children: React.ReactChild;
+  children: ReactNode;
 };
 
-export function River({ children }: RiverProps) {
+const River: React.FC<RiverProps> = ({ children }) => {
   return (
     <Box
       sx={{
@@ -33,4 +35,4 @@ export function River({ children }: RiverProps) {
   );
 }
 
-export default River;
+export { River };

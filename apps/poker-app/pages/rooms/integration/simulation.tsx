@@ -143,6 +143,18 @@ export class Sim{
         this.ownerGameState = this.ownerAgent.state;
     }
 
+    async completeRound(round: number){
+
+        await Promise.all([
+            this.pa0.waitForRoundComplete(round),
+            this.pa1.waitForRoundComplete(round),
+            this.pa2.waitForRoundComplete(round)
+        ])
+        
+        this.ownerGameState = this.ownerAgent.state;
+
+    }
+
 
     async constructHoleCards(){
 

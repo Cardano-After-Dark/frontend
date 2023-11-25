@@ -10,6 +10,9 @@ import {
 import { Box, Stack } from '@mui/material';
 
 import { PlayerState } from 'zkpoker';
+import { Chip } from '@mui/material';
+import { theme } from '../../../../../libs/poker-ui/src/lib/theme';
+
 
 export const Table = (props) => {
 
@@ -164,6 +167,21 @@ export const Table = (props) => {
                 <Stack direction={'row'} spacing={1}>
                     {communityCards}
                 </Stack>
+                <Chip
+                    sx={{
+                    position: 'absolute',
+                    [theme.breakpoints.down('md')]: {
+                        bottom: '80%',
+                        left: 0,
+                        zIndex: 1,
+                    },
+                    [theme.breakpoints.up('md')]: {
+                        top: 24,
+                    },
+                    }}
+                    color="info"
+                    label={props.props.gameProps?.currHand.pokerHandPot}
+                />
             </River>
             {ownerHand}
             {otherPlayerHands}
