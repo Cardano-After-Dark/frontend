@@ -1,0 +1,102 @@
+.sliderBar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 10px;
+}
+
+.sliderBar button {
+    background: #d1d0d0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    transition: background 0.1s ease, box-shadow 0.1s ease;
+}
+
+.sliderBar button:hover {
+    background: #b7b6b6;
+}
+
+.sliderBar button:active {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.sliderInput {
+    width: 80%;
+    margin: 10px 0;
+    appearance: none;
+    height: 20px;
+    border: none;
+    border-radius: 5px;
+    background: #d1d0d0;
+    outline: none;
+    position: relative;
+}
+
+.sliderInput::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: #007bff;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+}
+
+.sliderInput::-webkit-slider-thumb:hover {
+    background: #0056b3;
+}
+
+.sliderInput::-webkit-slider-thumb::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid #007bff;
+}
+
+.sliderInput::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+    /* Added transition for a smooth color change */
+}
+
+.sliderInput::-moz-range-thumb:hover {
+    background: #0056b3;
+}
+
+.sliderInput::-moz-range-thumb::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid #007bff;
+}
+
+.sliderValue {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}

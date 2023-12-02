@@ -1,18 +1,42 @@
+import React, { useState, ChangeEvent } from 'react';
 import ActionButton from '../ActionButton';
-import styles from './styles.module.css'; // Assuming you have styles defined in your module.css file
+import ActionSlider from '../ActionSlider';
+import styles from './styles.module.css';
 
-export default function ActionPanel({
-    onActionBet,
-    onActionFold,
-}) {
+interface ActionPanelProps {
+    onActionBet: () => Promise<void>;
+    onActionFold: () => Promise<void>;
+    bigBlind: number;
+    playerStack: number
+}
+
+const ActionPanel: React.FC<ActionPanelProps> = ({ onActionBet, onActionFold, bigBlind, playerStack }) => {
+    const [sliderValue, setSliderValue] = useState<number>(bigBlind);
+
+    const handleSliderChange = (value: number) => {
+        setSliderValue(value);
+    };
+
     return (
         <div className={styles.actionPanelContainer}>
-            <div className={styles.actionButtonWrapper}>
-                <ActionButton onClick={onActionBet} text='Bet' buttonType='betButton' />
+            <div className={styles.actionSliderWrapper}>
+                <ActionSlider
+                    value={sliderValue}
+                    onChange={handleSliderChange}
+                    min={bigBlind}
+                    max={playerStack}
+                    step={bigBlind}
+                />
             </div>
             <div className={styles.actionButtonWrapper}>
-                <ActionButton onClick={onActionFold} text='Fold' buttonType='foldButton' />
+                <ActionButton onClick={onActionBet} text="Bet" buttonType="betButton" />
             </div>
+            <div className={styles.actionButtonWrapper}>
+                <ActionButton onClick={onActionFold} text="Fold" buttonType="foldButton" />
+            </div>
+            
         </div>
     );
-}
+};
+
+export default ActionPanel;

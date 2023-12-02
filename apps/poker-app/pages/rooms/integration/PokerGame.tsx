@@ -90,7 +90,9 @@ const PokerGame: React.FC = () => {
             <Table props={{ 'gameProps': gameProps, 'cardProps': cardProps, 'sim': simulation}} />
             <ActionPanel
                 onActionBet={handleBet}
-                onActionFold={handelFold} />
+                onActionFold={handelFold} 
+                bigBlind={20} 
+                playerStack={1000} />
         </>
     );
 }

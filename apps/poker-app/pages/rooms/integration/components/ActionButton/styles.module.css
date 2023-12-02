@@ -1,11 +1,17 @@
-.betButton {
-    background: #007bff;
-    color: #fff;
+.baseButton {
     border: none;
     border-radius: 4px;
-    padding: 8px 12px;
+    padding: 12px 26px;
     cursor: pointer;
     transition: background 0.3s ease, box-shadow 0.1s ease;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Other button styles */
+.betButton {
+    background: #007bff;
 }
 
 .betButton:hover {
@@ -18,12 +24,6 @@
 
 .foldButton {
     background: rgb(215, 121, 121);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: background 0.3s ease, box-shadow 0.1s ease;
 }
 
 .foldButton:hover {
@@ -31,23 +31,5 @@
 }
 
 .foldButton:active {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-}
-
-.defaultButton {
-    background: rgb(113, 108, 108);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: background 0.3s ease, box-shadow 0.1s ease;
-}
-
-.defaultButton:hover {
-    background: rgb(98, 93, 90);
-}
-
-.defaultButton:active {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }

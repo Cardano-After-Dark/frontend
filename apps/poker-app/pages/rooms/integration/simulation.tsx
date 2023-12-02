@@ -141,6 +141,8 @@ export class Sim{
         // Currently needed to allow for time to recieve bet message from other player to update the game controller. 
         await new Promise(res => setTimeout(res, 100));
         this.ownerGameState = this.ownerAgent.state;
+        console.log(this.pa0.state)
+        console.log(this.ownerGameState)
     }
 
     async completeRound(round: number){

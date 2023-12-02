@@ -1,24 +1,27 @@
+import React, { ReactNode } from 'react';
 import styles from './styles.module.css';
 
-interface Props {
-  children?: React.ReactNode;
+interface ActionButtonProps {
+  children?: ReactNode;
   onClick: () => void;
   text: string;
   buttonType?: string;
 }
 
-export default function ActionButton({
+const ActionButton: React.FC<ActionButtonProps> = ({
   onClick,
   children,
   text,
   buttonType,
-}: Props) {
-  // Dynamically select the class based on the buttonType prop
-  const buttonClass = styles[buttonType] || styles.defaultButton;
+}: ActionButtonProps) => {
+  const buttonClass = `${styles.baseButton} ${buttonType ? styles[buttonType] : ''}`;
 
   return (
     <button className={buttonClass} onClick={onClick}>
       {text}
+      {children}
     </button>
   );
-}
+};
+
+export default ActionButton;
