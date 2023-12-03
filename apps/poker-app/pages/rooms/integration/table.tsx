@@ -18,11 +18,15 @@ export const Table = (props) => {
 
     const ownerPlayer: PlayerState = props.props.gameProps?.players.find((_, index) => index == props.props.gameProps?.thisPlayerIndex)
 
-    const otherPlayers: PlayerState [] = props.props.gameProps?.players.filter((_, index) => index != props.props.gameProps?.thisPlayerIndex)
+    const otherPlayers: PlayerState[] = props.props.gameProps?.players.filter((_, index) => index != props.props.gameProps?.thisPlayerIndex)
 
-    const ownerTurn: boolean = props.props.gameProps?.currPlayerIndex == props.props.gameProps?.thisPlayerIndex
+    const ownerTurn: boolean = props.props.gameProps?.currPlayerIndex == props.props.gameProps?.thisPlayerIndex;
 
     const playerTurnByPubKey: string = props.props.gameProps?.players[props.props.gameProps?.currPlayerIndex].playerPubKey;
+
+    const handActive: boolean = props.props.gameProps?.currRoundIndex < 4;
+
+    const potEmpty: boolean = props.props.gameProps?.currHand.pokerHandPot == 0
 
     const cardValueMap = {
         "A": CardValues.Ace,
@@ -129,30 +133,30 @@ export const Table = (props) => {
                 bet: ownerPlayer.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet == 0 ? null : ownerPlayer.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet,
                 // bet: 1,
                 cards: renderHoleCards,
-                turn: !(Array.isArray(renderHoleCards) && renderHoleCards.length === 0) && ownerTurn
+                turn: !(Array.isArray(renderHoleCards) && renderHoleCards.length === 0) && ownerTurn && handActive
             }}
         />
     ) : null;
 
     const otherPlayerHands = otherPlayers ? (
         <Players
-                players={otherPlayers.map(function (player, index) {
+            players={otherPlayers.map(function (player, index) {
 
-                    const thisPlayerTurn: boolean = player.playerPubKey == playerTurnByPubKey;
-                    
-                    return {
-                        name: player.playerName,
-                        bank: player.playerGameStack,
-                        bet: player.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet == 0 ? null : player.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet,
-                        // bet: 1,
-                        cards: (Array.isArray(renderHoleCards) && renderHoleCards.length === 0) || !player.playerHandActive? [] : [
-                            <PokerCard scaleSize={0.5} key={`${index}-1`} />,
-                            <PokerCard scaleSize={0.5} key={`${index}-2`} tilt />, 
-                        ],
-                        turn: thisPlayerTurn
-                    }
-                })}
-            />
+                const thisPlayerTurn: boolean = player.playerPubKey == playerTurnByPubKey && props.props.gameProps.currRoundIndex <= 4;
+
+                return {
+                    name: player.playerName,
+                    bank: player.playerGameStack,
+                    bet: player.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet == 0 ? null : player.playerRounds[props.props.gameProps.currRoundIndex].playerRoundCurBet,
+                    // bet: 1,
+                    cards: (Array.isArray(renderHoleCards) && renderHoleCards.length === 0) || !player.playerHandActive ? [] : [
+                        <PokerCard scaleSize={0.5} key={`${index}-1`} />,
+                        <PokerCard scaleSize={0.5} key={`${index}-2`} tilt />,
+                    ],
+                    turn: thisPlayerTurn && handActive
+                }
+            })}
+        />
     ) : null
 
     const communityCards = [
@@ -167,21 +171,25 @@ export const Table = (props) => {
                 <Stack direction={'row'} spacing={1}>
                     {communityCards}
                 </Stack>
-                <Chip
+                {!potEmpty && <Chip
                     sx={{
-                    position: 'absolute',
-                    [theme.breakpoints.down('md')]: {
-                        bottom: '80%',
-                        left: 0,
-                        zIndex: 1,
-                    },
-                    [theme.breakpoints.up('md')]: {
-                        top: 24,
-                    },
+                        position: 'absolute',
+                        [theme.breakpoints.down('md')]: {
+                            bottom: '105%',
+                            left: 0,
+                            zIndex: 1,
+                        },
+                        [theme.breakpoints.up('md')]: {
+                            top: 'auto', 
+                            bottom: '-25%',
+                            zIndex: 1,
+                            fontSize: 16,
+                        },
                     }}
                     color="info"
-                    label={props.props.gameProps?.currHand.pokerHandPot}
-                />
+                    label={`Pot: ${props.props.gameProps?.currHand.pokerHandPot}`}
+                    
+                />}
             </River>
             {ownerHand}
             {otherPlayerHands}

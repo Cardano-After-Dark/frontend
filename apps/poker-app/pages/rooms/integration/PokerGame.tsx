@@ -29,6 +29,8 @@ const PokerGame: React.FC = () => {
     const [cardProps, setCardProps] = useState<TableState>(initialTableState);
     const [gameProps, setGameProps] = useState<GameState>();
 
+    const [handActive, setHandActive] = useState(true)
+
     const handelFold = async () => {
         await simulation.playerFold(simulation.allPlayerAgents[simulation.ownerGameState.currPlayerIndex])
 
@@ -40,11 +42,6 @@ const PokerGame: React.FC = () => {
     const handleBet = async () => {
 
         await simulation.playerBet(simulation.allPlayerAgents[simulation.ownerGameState.currPlayerIndex])
-
-        if (simulation.ownerGameState.currPlayerIndex == simulation.allPlayerAgents.length){
-            // await simulation.completeRound(simulation.ownerGameState.currRoundIndex)
-        }
-
 
         const updatedGameState = { ...simulation.ownerGameState, currPlayerIndex: simulation.ownerGameState.currPlayerIndex, currRoundIndex: simulation.ownerGameState.currRoundIndex} as GameState
 
@@ -84,15 +81,49 @@ const PokerGame: React.FC = () => {
         setCardProps(simulation.ownerTableView)
     }, [simulation.ownerTableView]);
 
+    useEffect(() => {
+
+        const handleRoundUpdate = async () => {
+            switch (simulation.ownerGameState?.currRoundIndex) {
+                case 1:
+                    await simulation.constructFlopCards();
+                    const flopTableView = { ...simulation.ownerTableView,  flopCards: simulation.ownerTableView.flopCards} as TableState
+                    setCardProps(flopTableView)
+                    break;
+    
+                case 2:
+                    await simulation.constructTurnCard();
+                    const turnTableView = { ...simulation.ownerTableView,  turnCard: simulation.ownerTableView.turnCard} as TableState
+                    setCardProps(turnTableView)
+                    break;
+
+                case 3:
+                    await simulation.constructRiverCard();
+                    const riverTableView = { ...simulation.ownerTableView,  riverCard: simulation.ownerTableView.riverCard} as TableState
+                    setCardProps(riverTableView)
+                    break;
+
+                case 4:
+                    setHandActive(false);
+    
+                default:
+                    break;
+            }
+        };
+    
+        handleRoundUpdate();
+
+    }, [simulation.ownerGameState?.currRoundIndex]);
+
     return (
         <>
             <LoadingOverlay isLoading={isLoading} text={loadingDescription}/>
             <Table props={{ 'gameProps': gameProps, 'cardProps': cardProps, 'sim': simulation}} />
-            <ActionPanel
+            {handActive && <ActionPanel
                 onActionBet={handleBet}
                 onActionFold={handelFold} 
                 bigBlind={20} 
-                playerStack={1000} />
+                playerStack={1000} />}
         </>
     );
 }

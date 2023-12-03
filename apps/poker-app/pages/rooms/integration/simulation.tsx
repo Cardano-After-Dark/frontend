@@ -131,6 +131,7 @@ export class Sim{
 
         // Currently needed to allow for time to recieve bet message from other player to update the game controller. 
         await new Promise(res => setTimeout(res, 100));
+
         this.ownerGameState = this.ownerAgent.state;
     }
 
@@ -140,9 +141,11 @@ export class Sim{
 
         // Currently needed to allow for time to recieve bet message from other player to update the game controller. 
         await new Promise(res => setTimeout(res, 100));
+
+        
+
         this.ownerGameState = this.ownerAgent.state;
-        console.log(this.pa0.state)
-        console.log(this.ownerGameState)
+
     }
 
     async completeRound(round: number){
@@ -154,6 +157,8 @@ export class Sim{
         ])
         
         this.ownerGameState = this.ownerAgent.state;
+
+        console.log('ROUND COMPLETE',this.ownerGameState)
 
     }
 
@@ -229,6 +234,8 @@ export class Sim{
             this.pa2.displayFlopCards()
         ])
 
+        this.ownerTableView = this.ownerAgent.tableView;
+
     }
 
     async constructTurnCard(){
@@ -243,6 +250,8 @@ export class Sim{
             this.pa1.displayTurnCard(),
             this.pa2.displayTurnCard()
         ])
+
+        this.ownerTableView = this.ownerAgent.tableView;
 
     }
 
@@ -259,6 +268,8 @@ export class Sim{
             this.pa1.displayRiverCard(),
             this.pa2.displayRiverCard()
         ])
+
+        this.ownerTableView = this.ownerAgent.tableView;
     }
 
     async ownerAgentBet(){
