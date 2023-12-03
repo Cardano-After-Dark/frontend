@@ -3,10 +3,14 @@ import styles from './styles.module.css';
 
 interface LoadingOverlayProps {
   isLoading: boolean;
-  text?
+  text?;
 }
 
-const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isLoading, text="Loading..." }) => {
+const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
+  isLoading,
+  text = 'Loading...',
+}) => {
+  
   return (
     <>
       {isLoading && (

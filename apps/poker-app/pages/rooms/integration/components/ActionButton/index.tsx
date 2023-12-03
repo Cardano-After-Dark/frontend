@@ -14,7 +14,9 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   text,
   buttonType,
 }: ActionButtonProps) => {
-  const buttonClass = `${styles.baseButton} ${buttonType ? styles[buttonType] : ''}`;
+  const buttonClass = `${styles.baseButton} ${
+    buttonType ? styles[buttonType] : ''
+  }`;
 
   return (
     <button className={buttonClass} onClick={onClick}>

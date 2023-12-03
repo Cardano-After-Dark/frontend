@@ -1,22 +1,22 @@
 .actionPanelContainer {
-    background-color: #a7a5a5;
-    border-radius: 10px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 999;
+  background-color: #a7a5a5;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 999;
 }
 
 .actionButtonWrapper {
-    margin: 10px;
+  margin: 10px;
 }
 
 .actionSliderWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
