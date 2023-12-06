@@ -7,7 +7,7 @@ import {
   GameState,
 } from 'zkpoker';
 
-export class Sim {
+class Sim {
   status: string;
 
   nextLoadingDescription: string;
@@ -219,3 +219,5 @@ export class Sim {
     this.ownerTableView = this.ownerAgent.tableView;
   }
 }
+
+export default Sim;

@@ -1,7 +1,7 @@
 import { Layout } from '@after-dark-app/common-ui';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
-import { PokerGame } from './integration/PokerGame';
+import { PokerGame } from '../../components/PokerGame';
 
 export function PokerRoom() {
   const router = useRouter();

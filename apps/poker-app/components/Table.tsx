@@ -11,28 +11,35 @@ import { Box, Stack } from '@mui/material';
 
 import { PlayerState } from 'zkpoker';
 import { Chip } from '@mui/material';
-import { theme } from '../../../../../libs/poker-ui/src/lib/theme';
+import { theme } from '../../../libs/poker-ui/src/lib/theme';
+import { GameState, TableState } from 'zkpoker';
 
-export const Table = (props) => {
-  const ownerPlayer: PlayerState = props.props.gameProps?.players.find(
-    (_, index) => index == props.props.gameProps?.thisPlayerIndex
+
+interface TableProps {
+  game: GameState;
+  cards: TableState;
+}
+
+const Table: React.FC<TableProps> = ({ game, cards }) => {
+  const ownerPlayer: PlayerState = game?.players.find(
+    (_, index) => index == game?.thisPlayerIndex
   );
 
-  const otherPlayers: PlayerState[] = props.props.gameProps?.players.filter(
-    (_, index) => index != props.props.gameProps?.thisPlayerIndex
+  const otherPlayers: PlayerState[] = game?.players.filter(
+    (_, index) => index != game?.thisPlayerIndex
   );
 
   const ownerTurn: boolean =
-    props.props.gameProps?.currPlayerIndex ==
-    props.props.gameProps?.thisPlayerIndex;
+    game?.currPlayerIndex ==
+    game?.thisPlayerIndex;
 
   const playerTurnByPubKey: string =
-    props.props.gameProps?.players[props.props.gameProps?.currPlayerIndex]
+    game?.players[game?.currPlayerIndex]
       .playerPubKey;
 
-  const handActive: boolean = props.props.gameProps?.currRoundIndex < 4;
+  const handActive: boolean = game?.currRoundIndex < 4;
 
-  const potEmpty: boolean = props.props.gameProps?.currHand.pokerHandPot == 0;
+  const potEmpty: boolean = game?.currHand.pokerHandPot == 0;
 
   const cardValueMap = {
     A: CardValues.Ace,
@@ -77,8 +84,8 @@ export const Table = (props) => {
   };
 
   const flopCards =
-    props.props.cardProps.flopCards &&
-    props.props.cardProps.flopCards.map(function (item, index) {
+    cards.flopCards &&
+    cards.flopCards.map(function (item, index) {
       const card = getSuitAndValue(item);
 
       return (
@@ -91,7 +98,7 @@ export const Table = (props) => {
       );
     });
 
-  const turnCard = getSuitAndValue(props.props.cardProps.turnCard);
+  const turnCard = getSuitAndValue(cards.turnCard);
 
   // Check if turnCard is defined and render the PokerCard component
   const renderTurnCard = turnCard ? (
@@ -103,7 +110,7 @@ export const Table = (props) => {
     />
   ) : null;
 
-  const riverCard = getSuitAndValue(props.props.cardProps.riverCard);
+  const riverCard = getSuitAndValue(cards.riverCard);
 
   // Check if riverCard is defined and render the PokerCard component
   const renderRiverCard = riverCard ? (
@@ -116,8 +123,8 @@ export const Table = (props) => {
   ) : null;
 
   const renderHoleCards =
-    props.props.cardProps.holeCards &&
-    props.props.cardProps.holeCards.map(function (item, index) {
+    cards.holeCards &&
+    cards.holeCards.map(function (item, index) {
       const card = getSuitAndValue(item);
 
       return (
@@ -137,10 +144,10 @@ export const Table = (props) => {
         name: ownerPlayer.playerName,
         bank: ownerPlayer.playerGameStack,
         bet:
-          ownerPlayer.playerRounds[props.props.gameProps.currRoundIndex]
+          ownerPlayer.playerRounds[game.currRoundIndex]
             .playerRoundCurBet == 0
             ? null
-            : ownerPlayer.playerRounds[props.props.gameProps.currRoundIndex]
+            : ownerPlayer.playerRounds[game.currRoundIndex]
                 .playerRoundCurBet,
         // bet: 1,
         cards: renderHoleCards,
@@ -157,16 +164,16 @@ export const Table = (props) => {
       players={otherPlayers.map(function (player, index) {
         const thisPlayerTurn: boolean =
           player.playerPubKey == playerTurnByPubKey &&
-          props.props.gameProps.currRoundIndex <= 4;
+          game.currRoundIndex <= 4;
 
         return {
           name: player.playerName,
           bank: player.playerGameStack,
           bet:
-            player.playerRounds[props.props.gameProps.currRoundIndex]
+            player.playerRounds[game.currRoundIndex]
               .playerRoundCurBet == 0
               ? null
-              : player.playerRounds[props.props.gameProps.currRoundIndex]
+              : player.playerRounds[game.currRoundIndex]
                   .playerRoundCurBet,
           // bet: 1,
           cards:
@@ -212,7 +219,7 @@ export const Table = (props) => {
               },
             }}
             color="info"
-            label={`Pot: ${props.props.gameProps?.currHand.pokerHandPot}`}
+            label={`Pot: ${game?.currHand.pokerHandPot}`}
           />
         )}
       </River>
@@ -221,3 +228,5 @@ export const Table = (props) => {
     </PokerTable>
   );
 };
+
+export default Table;

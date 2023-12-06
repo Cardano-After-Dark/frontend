@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from './table';
-import { Sim } from './simulation';
-import ActionPanel from './components/ActionPanel';
+import Table from './Table';
+import Sim from './Simulation';
+import ActionPanel from './ActionPanel';
 import { GameState, TableState } from 'zkpoker';
-import LoadingOverlay from './components/LoadingOverlay2';
+import LoadingOverlay from './LoadingOverlayCards';
 
 const simulation = new Sim();
 
@@ -131,10 +131,8 @@ const PokerGame: React.FC = () => {
   return (
     <>
       <LoadingOverlay isLoading={isLoading} text={loadingDescription} />
-      <Table
-        props={{ gameProps: gameProps, cardProps: cardProps, sim: simulation }}
-      />
-      {handActive && (
+      <Table game={gameProps} cards={cardProps} />
+      {handActive && !isLoading && (
         <ActionPanel
           onActionBet={handleBet}
           onActionFold={handelFold}
