@@ -1,5 +1,5 @@
 import { theme } from '../../theme';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 
