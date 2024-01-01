@@ -129,8 +129,8 @@ class Sim {
     this.status = 'CARD_SETUP_COMPLETE';
   }
 
-  async playerBet(player: PlayerAgent) {
-    await player.doBetOnMyTurn(20);
+  async playerBet(player: PlayerAgent, betAmount: number) {
+    await player.doBetOnMyTurn(betAmount);
 
     // Currently needed to allow for time to recieve bet message from other player to update the game controller.
     await new Promise((res) => setTimeout(res, 100));

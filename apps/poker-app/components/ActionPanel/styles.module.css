@@ -4,6 +4,7 @@
   padding: 10px;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   position: fixed;
   bottom: 30px;
@@ -18,5 +19,12 @@
 .actionSliderWrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.actionButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 }

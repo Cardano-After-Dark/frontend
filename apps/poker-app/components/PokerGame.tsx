@@ -38,9 +38,15 @@ const PokerGame: React.FC = () => {
     setGameProps(updatedGameState);
   };
 
-  const handleBet = async () => {
+  const handleBet = async (betAmount: number) => {
+    const player = gameProps.players[gameProps.currPlayerIndex];
+    const betIncrement =
+      betAmount -
+      player.playerRounds[gameProps.currRoundIndex].playerRoundCurBet;
+
     await simulation.playerBet(
-      simulation.allPlayerAgents[simulation.ownerGameState.currPlayerIndex]
+      simulation.allPlayerAgents[simulation.ownerGameState.currPlayerIndex],
+      betIncrement
     );
 
     const updatedGameState = {
@@ -128,16 +134,27 @@ const PokerGame: React.FC = () => {
     handleRoundUpdate();
   }, [simulation.ownerGameState?.currRoundIndex]);
 
+  const currHiBet = gameProps?.rounds[gameProps.currRoundIndex].pokerRoundHiBet;
+  const playerCurrBet =
+    gameProps?.players[gameProps.currPlayerIndex].playerRounds[
+      gameProps.currRoundIndex
+    ].playerRoundCurBet;
+  const playerStack =
+    gameProps?.players[gameProps.currPlayerIndex].playerGameStack;
+
   return (
     <>
       <LoadingOverlay isLoading={isLoading} text={loadingDescription} />
       <Table game={gameProps} cards={cardProps} />
       {handActive && !isLoading && (
         <ActionPanel
+          key={`${gameProps.currRoundIndex}-${gameProps.currPlayerIndex}`}
           onActionBet={handleBet}
           onActionFold={handelFold}
           bigBlind={20}
-          playerStack={1000}
+          currHiBet={currHiBet}
+          playerCurrBet={playerCurrBet}
+          playerStack={playerStack}
         />
       )}
     </>
