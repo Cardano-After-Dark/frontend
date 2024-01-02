@@ -8,11 +8,23 @@ type HandProps = {
 };
 
 export function Hand({ player }: HandProps) {
-  const { cards, name, bank, bet } = player;
+  const { cards, name, bank, bet, turn } = player;
   return (
     <Box
       sx={{
-        background: 'rgba(255, 255, 255, 0.2)',
+        background: turn ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.2)',
+        border: turn ? '5px solid rgba(245, 16, 16, 0.75)' : '5px solid rgba(255, 255, 255, 0.05)',
+        ...(turn && {
+          animation: 'flash 2.5s infinite',
+          '@keyframes flash': {
+            '0%, 100%': {
+              borderColor: 'rgba(255, 255, 255, 0.05)',
+            },
+            '50%': {
+              borderColor: 'rgba(245, 16, 16, 0.75)',
+            },
+          }
+        }),
         borderRadius: 3,
         padding: '5px',
         position: 'absolute',
@@ -35,7 +47,7 @@ export function Hand({ player }: HandProps) {
           height: '100%',
           marginLeft: '10px',
           padding: '20px',
-        }}
+         }}
       >
         <Typography variant="h5">{name}</Typography>
         <Typography variant="subtitle1">{bank}</Typography>
