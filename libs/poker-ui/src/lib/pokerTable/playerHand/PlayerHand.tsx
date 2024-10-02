@@ -3,16 +3,16 @@ import { Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Bet, BetPosition } from '../bet/Bet';
 import { Player } from '../PokerTable';
+import { Seats, seatPositions } from '../seat/Seat';
 
-export enum Seats {
-  Seat1,
-  Seat2,
-  Seat3,
-  Seat4,
-  Seat5,
-  Seat6,
-  Seat7,
-}
+// enum Seats {
+//   Seat1,
+//   Seat2,
+//   Seat3,
+//   Seat4,
+//   Seat5,
+//   Seat6,
+// }
 
 type PlayerConfig = {
   position: Seats;
@@ -21,141 +21,146 @@ type PlayerConfig = {
 
 type PlayerProps = PlayerConfig;
 
-const playerPositions = [
-  {
-    // Player across from user
-    player: {
-      [theme.breakpoints.down('md')]: {
-        top: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '135px',
-        height: '60px',
-      },
-      [theme.breakpoints.up('md')]: {
-        top: 30,
-        left: '50%',
-        transform: 'translateX(-50%)',
-      },
-    },
-    bet: BetPosition.Bottom,
-  },
-  {
-    // top left corner
-    player: {
-      [theme.breakpoints.down('md')]: {
-        top: '15%',
-        left: 0,
-        width: '135px',
-        height: '60px',
-      },
-      [theme.breakpoints.up('md')]: {
-        top: 30,
-        left: 50,
-      },
-    },
-    bet: BetPosition.BottomRight,
-  },
-  {
-    // bottom left corner
-    player: {
-      [theme.breakpoints.down('md')]: {
-        top: '15%',
-        right: 0,
-        width: '135px',
-        height: '60px',
-      },
-      [theme.breakpoints.up('md')]: {
-        top: '70%',
-        left: 30,
-        transform: 'translateY(-50%)',
-      },
-    },
-    bet: BetPosition.Right,
-  },
-  {
-    // top right corner
-    player: {
-      [theme.breakpoints.down('md')]: {
-        top: '30%',
-        left: 0,
-        width: '135px',
-        height: '60px',
-      },
-      [theme.breakpoints.up('md')]: {
-        top: 30,
-        right: 50,
-      },
-    },
-    bet: BetPosition.BottomLeft,
-  },
-  {
-    // top right side
-    player: {
-      [theme.breakpoints.down('md')]: {
-        top: '65%',
-        left: 0,
-        width: '135px',
-        height: '60px',
-      },
-      [theme.breakpoints.up('md')]: {
-        top: '40%',
-        right: 30,
-        transform: 'translateY(-50%)',
-      },
-    },
-    bet: BetPosition.Left,
-  },
-  {
-    // bottom right corner
-    player: {
-      [theme.breakpoints.down('md')]: {
-        top: '65%',
-        right: 0,
-        width: '135px',
-        height: '60px',
-      },
-      [theme.breakpoints.up('md')]: {
-        top: '70%',
-        right: 30,
-        transform: 'translateY(-50%)',
-      },
-    },
-    bet: BetPosition.Left,
-  },
-  {
-    // top left side
-    player: {
-      [theme.breakpoints.down('md')]: {
-        top: '30%',
-        right: 0,
-        width: '135px',
-        height: '60px',
-      },
-      [theme.breakpoints.up('md')]: {
-        top: '40%',
-        left: 30,
-        transform: 'translateY(-50%)',
-      },
-    },
-    bet: BetPosition.Right,
-  },
-];
+// const playerPositions = [
+//   {
+//     // Player across from user
+//     player: {
+//       [theme.breakpoints.down('md')]: {
+//         top: 0,
+//         left: '50%',
+//         transform: 'translateX(-50%)',
+//         width: '135px',
+//         height: '60px',
+//       },
+//       [theme.breakpoints.up('md')]: {
+//         top: 30,
+//         left: '50%',
+//         transform: 'translateX(-50%)',
+//       },
+//     },
+//     bet: BetPosition.Bottom,
+//   },
+//   {
+//     // top left corner
+//     player: {
+//       [theme.breakpoints.down('md')]: {
+//         top: '15%',
+//         left: 0,
+//         width: '135px',
+//         height: '60px',
+//       },
+//       [theme.breakpoints.up('md')]: {
+//         top: 30,
+//         left: 50,
+//       },
+//     },
+//     bet: BetPosition.BottomRight,
+//   },
+//   {
+//     // bottom left corner
+//     player: {
+//       [theme.breakpoints.down('md')]: {
+//         top: '15%',
+//         right: 0,
+//         width: '135px',
+//         height: '60px',
+//       },
+//       [theme.breakpoints.up('md')]: {
+//         top: '70%',
+//         left: 30,
+//         transform: 'translateY(-50%)',
+//       },
+//     },
+//     bet: BetPosition.Right,
+//   },
+//   {
+//     // top right corner
+//     player: {
+//       [theme.breakpoints.down('md')]: {
+//         top: '30%',
+//         left: 0,
+//         width: '135px',
+//         height: '60px',
+//       },
+//       [theme.breakpoints.up('md')]: {
+//         top: 30,
+//         right: 50,
+//       },
+//     },
+//     bet: BetPosition.BottomLeft,
+//   },
+//   {
+//     // top right side
+//     player: {
+//       [theme.breakpoints.down('md')]: {
+//         top: '65%',
+//         left: 0,
+//         width: '135px',
+//         height: '60px',
+//       },
+//       [theme.breakpoints.up('md')]: {
+//         top: '40%',
+//         right: 30,
+//         transform: 'translateY(-50%)',
+//       },
+//     },
+//     bet: BetPosition.Left,
+//   },
+//   {
+//     // bottom right corner
+//     player: {
+//       [theme.breakpoints.down('md')]: {
+//         top: '65%',
+//         right: 0,
+//         width: '135px',
+//         height: '60px',
+//       },
+//       [theme.breakpoints.up('md')]: {
+//         top: '70%',
+//         right: 30,
+//         transform: 'translateY(-50%)',
+//       },
+//     },
+//     bet: BetPosition.Left,
+//   },
+//   {
+//     // top left side
+//     player: {
+//       [theme.breakpoints.down('md')]: {
+//         top: '30%',
+//         right: 0,
+//         width: '135px',
+//         height: '60px',
+//       },
+//       [theme.breakpoints.up('md')]: {
+//         top: '40%',
+//         left: 30,
+//         transform: 'translateY(-50%)',
+//       },
+//     },
+//     bet: BetPosition.Right,
+//   },
+// ];
 
 export function PlayerHand({ position, player }: PlayerProps) {
   const { cards, name, bank, bet, turn } = player;
 
   return (
     <Box
-      sx={{borderRadius: 3,
+      sx={{
+        borderRadius: 3,
         padding: '5px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        background: turn ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.2)',
-        border: turn ? '5px solid rgba(245, 16, 16, 0.75)' : '5px solid rgba(255, 255, 255, 0.05)',
-        ...playerPositions[position].player,
+        background: turn
+          ? 'rgba(255, 255, 255, 0.5)'
+          : 'rgba(255, 255, 255, 0.2)',
+        border: turn
+          ? '5px solid rgba(245, 16, 16, 0.75)'
+          : '5px solid rgba(255, 255, 255, 0.05)',
+        ...seatPositions[position].player,
         ...(turn && {
           animation: 'flash 2.5s infinite',
           '@keyframes flash': {
@@ -166,10 +171,10 @@ export function PlayerHand({ position, player }: PlayerProps) {
               borderColor: 'rgba(245, 16, 16, 0.75)',
             },
           },
-        })
+        }),
       }}
     >
-      {bet && <Bet amount={bet} position={playerPositions[position].bet} />}
+      {bet && <Bet amount={bet} position={seatPositions[position].bet} />}
       {cards && (
         <Stack direction={'row'} spacing={-1}>
           {cards}

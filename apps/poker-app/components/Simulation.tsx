@@ -1,223 +1,225 @@
-import {
-  PokerPlayer,
-  GENERATED_KEYS,
-  PlayerAgent,
-  CommChannel,
-  TableState,
-  GameState,
-} from 'zkpoker';
+// import { PlayerApp } from 'zkpoker';
 
-class Sim {
-  status: string;
+// class zkPokerConnector {
+//   playerApp: PlayerApp;
 
-  nextLoadingDescription: string;
+//   constructor(player) {
+//     this.playerApp = new PlayerApp(player);
+//   }
+// }
 
-  player0: PokerPlayer;
-  player1: PokerPlayer;
-  player2: PokerPlayer;
+// export default zkPokerConnector;
+// class Sim {
+//   status: string;
 
-  pa0: PlayerAgent;
-  pa1: PlayerAgent;
-  pa2: PlayerAgent;
+//   nextLoadingDescription: string;
 
-  allPlayerAgents: PlayerAgent[];
+//   player0: PokerPlayer;
+//   player1: PokerPlayer;
+//   player2: PokerPlayer;
 
-  ownerAgent: PlayerAgent;
-  ownerTableView: TableState;
+//   pa0: PlayerAgent;
+//   pa1: PlayerAgent;
+//   pa2: PlayerAgent;
 
-  currRound: number;
+//   allPlayerAgents: PlayerAgent[];
 
-  ownerGameState: GameState;
+//   ownerAgent: PlayerAgent;
+//   ownerTableView: TableState;
 
-  constructor() {
-    this.ownerTableView = {
-      holeCards: [],
-      flopCards: [],
-      turnCard: undefined,
-      riverCard: undefined,
-    } as TableState;
+//   currRound: number;
 
-    this.status = 'SETUP_COMPLETE';
-    this.nextLoadingDescription = 'Adding players...';
-  }
+//   ownerGameState: GameState;
 
-  async addPlayers() {
-    this.player0 = new PokerPlayer(
-      { name: 'astrid', stake: 1_000 },
-      GENERATED_KEYS
-    );
-    this.player1 = new PokerPlayer(
-      { name: 'bette', stake: 1_000 },
-      GENERATED_KEYS
-    );
-    this.player2 = new PokerPlayer(
-      { name: 'carla', stake: 1_000 },
-      GENERATED_KEYS
-    );
+//   constructor() {
+//     this.ownerTableView = {
+//       holeCards: [],
+//       flopCards: [],
+//       turnCard: undefined,
+//       riverCard: undefined,
+//     } as TableState;
 
-    await this.setupAgents();
-    await this.setupCommChannel();
+//     this.status = 'SETUP_COMPLETE';
+//     this.nextLoadingDescription = 'Adding players...';
+//   }
 
-    this.status = 'PLAYERS_ADDED';
-    this.nextLoadingDescription = 'Generating keys...';
-  }
+//   async addPlayers() {
+//     this.player0 = new PokerPlayer(
+//       { name: 'astrid', stake: 1_000 },
+//       GENERATED_KEYS
+//     );
+//     this.player1 = new PokerPlayer(
+//       { name: 'bette', stake: 1_000 },
+//       GENERATED_KEYS
+//     );
+//     this.player2 = new PokerPlayer(
+//       { name: 'carla', stake: 1_000 },
+//       GENERATED_KEYS
+//     );
 
-  private async setupAgents() {
-    const publicInfo0 = await this.player0.getPublicInfo();
-    const publicInfo1 = await this.player1.getPublicInfo();
-    const publicInfo2 = await this.player2.getPublicInfo();
-    const allPublicInfo = [publicInfo0, publicInfo1, publicInfo2];
+//     await this.setupAgents();
+//     await this.setupCommChannel();
 
-    this.pa0 = new PlayerAgent(this.player0, allPublicInfo);
-    this.pa1 = new PlayerAgent(this.player1, allPublicInfo);
-    this.pa2 = new PlayerAgent(this.player2, allPublicInfo);
+//     this.status = 'PLAYERS_ADDED';
+//     this.nextLoadingDescription = 'Generating keys...';
+//   }
 
-    this.allPlayerAgents = [this.pa0, this.pa1, this.pa2];
+//   private async setupAgents() {
+//     const publicInfo0 = await this.player0.getPublicInfo();
+//     const publicInfo1 = await this.player1.getPublicInfo();
+//     const publicInfo2 = await this.player2.getPublicInfo();
+//     const allPublicInfo = [publicInfo0, publicInfo1, publicInfo2];
 
-    this.ownerAgent = this.pa0;
-    this.ownerGameState = this.ownerAgent.state;
-  }
+//     this.pa0 = new PlayerAgent(this.player0, allPublicInfo);
+//     this.pa1 = new PlayerAgent(this.player1, allPublicInfo);
+//     this.pa2 = new PlayerAgent(this.player2, allPublicInfo);
 
-  private setupCommChannel() {
-    const cc = new CommChannel();
-    cc.setupAgentComms([this.pa0, this.pa1, this.pa2]);
-  }
+//     this.allPlayerAgents = [this.pa0, this.pa1, this.pa2];
 
-  async setupKeys() {
-    await Promise.all([
-      this.pa0.broadcastPublicShare(),
-      this.pa1.broadcastPublicShare(),
-      this.pa2.broadcastPublicShare(),
-    ]);
+//     this.ownerAgent = this.pa0;
+//     this.ownerGameState = this.ownerAgent.state;
+//   }
 
-    await Promise.all([
-      this.pa0.setupGroupPublicKey(),
-      this.pa1.setupGroupPublicKey(),
-      this.pa2.setupGroupPublicKey(),
-    ]);
+//   private setupCommChannel() {
+//     const cc = new CommChannel();
+//     cc.setupAgentComms([this.pa0, this.pa1, this.pa2]);
+//   }
 
-    this.status = 'KEYS_GENERATED';
-    this.nextLoadingDescription = 'Shuffling deck...';
-  }
+//   async setupKeys() {
+//     await Promise.all([
+//       this.pa0.broadcastPublicShare(),
+//       this.pa1.broadcastPublicShare(),
+//       this.pa2.broadcastPublicShare(),
+//     ]);
 
-  async setupCards() {
-    await this.pa0.createDeck();
-    await this.pa1.shuffleAndRerandomize();
-    await this.pa2.shuffleAndRerandomize();
+//     await Promise.all([
+//       this.pa0.setupGroupPublicKey(),
+//       this.pa1.setupGroupPublicKey(),
+//       this.pa2.setupGroupPublicKey(),
+//     ]);
 
-    await Promise.all([
-      this.pa0.waitForDeckReady(),
-      this.pa1.waitForDeckReady(),
-      this.pa2.waitForDeckReady(),
-    ]);
+//     this.status = 'KEYS_GENERATED';
+//     this.nextLoadingDescription = 'Shuffling deck...';
+//   }
 
-    await Promise.all([
-      // blocked untill all three players have shuffled and rerandomized
-      this.pa0.holeCardDecryption(),
-      this.pa1.holeCardDecryption(),
-      this.pa2.holeCardDecryption(),
-    ]);
+//   async setupCards() {
+//     await this.pa0.createDeck();
+//     await this.pa1.shuffleAndRerandomize();
+//     await this.pa2.shuffleAndRerandomize();
 
-    await Promise.all([
-      this.pa0.reconstructHoleCards(),
-      this.pa1.reconstructHoleCards(),
-      this.pa2.reconstructHoleCards(),
-    ]);
+//     await Promise.all([
+//       this.pa0.waitForDeckReady(),
+//       this.pa1.waitForDeckReady(),
+//       this.pa2.waitForDeckReady(),
+//     ]);
 
-    this.ownerTableView = this.ownerAgent.tableView;
+//     await Promise.all([
+//       // blocked untill all three players have shuffled and rerandomized
+//       this.pa0.holeCardDecryption(),
+//       this.pa1.holeCardDecryption(),
+//       this.pa2.holeCardDecryption(),
+//     ]);
 
-    this.status = 'CARD_SETUP_COMPLETE';
-  }
+//     await Promise.all([
+//       this.pa0.reconstructHoleCards(),
+//       this.pa1.reconstructHoleCards(),
+//       this.pa2.reconstructHoleCards(),
+//     ]);
 
-  async playerBet(player: PlayerAgent, betAmount: number) {
-    await player.doBetOnMyTurn(betAmount);
+//     this.ownerTableView = this.ownerAgent.tableView;
 
-    // Currently needed to allow for time to recieve bet message from other player to update the game controller.
-    await new Promise((res) => setTimeout(res, 100));
+//     this.status = 'CARD_SETUP_COMPLETE';
+//   }
 
-    this.ownerGameState = this.ownerAgent.state;
-  }
+//   async playerBet(player: PlayerAgent, betAmount: number) {
+//     await player.doBetOnMyTurn(betAmount);
 
-  async playerFold(player: PlayerAgent) {
-    await player.doFoldOnMyTurn();
+//     // Currently needed to allow for time to recieve bet message from other player to update the game controller.
+//     await new Promise((res) => setTimeout(res, 100));
 
-    // Currently needed to allow for time to recieve bet message from other player to update the game controller.
-    await new Promise((res) => setTimeout(res, 100));
+//     this.ownerGameState = this.ownerAgent.state;
+//   }
 
-    this.ownerGameState = this.ownerAgent.state;
-  }
+//   async playerFold(player: PlayerAgent) {
+//     await player.doFoldOnMyTurn();
 
-  async completeRound(round: number) {
-    await Promise.all([
-      this.pa0.waitForRoundComplete(round),
-      this.pa1.waitForRoundComplete(round),
-      this.pa2.waitForRoundComplete(round),
-    ]);
+//     // Currently needed to allow for time to recieve bet message from other player to update the game controller.
+//     await new Promise((res) => setTimeout(res, 100));
 
-    this.ownerGameState = this.ownerAgent.state;
-  }
+//     this.ownerGameState = this.ownerAgent.state;
+//   }
 
-  async constructHoleCards() {
-    await Promise.all([
-      this.pa0.holeCardDecryption(),
-      this.pa1.holeCardDecryption(),
-      this.pa2.holeCardDecryption(),
-    ]);
+//   async completeRound(round: number) {
+//     await Promise.all([
+//       this.pa0.waitForRoundComplete(round),
+//       this.pa1.waitForRoundComplete(round),
+//       this.pa2.waitForRoundComplete(round),
+//     ]);
 
-    await Promise.all([
-      this.pa0.reconstructHoleCards(),
-      this.pa1.reconstructHoleCards(),
-      this.pa2.reconstructHoleCards(),
-    ]);
-  }
+//     this.ownerGameState = this.ownerAgent.state;
+//   }
 
-  async constructFlopCards() {
-    await Promise.all([
-      this.pa0.flopCardDecryption(),
-      this.pa1.flopCardDecryption(),
-      this.pa2.flopCardDecryption(),
-    ]);
+//   async constructHoleCards() {
+//     await Promise.all([
+//       this.pa0.holeCardDecryption(),
+//       this.pa1.holeCardDecryption(),
+//       this.pa2.holeCardDecryption(),
+//     ]);
 
-    await Promise.all([
-      this.pa0.displayFlopCards(),
-      this.pa1.displayFlopCards(),
-      this.pa2.displayFlopCards(),
-    ]);
+//     await Promise.all([
+//       this.pa0.reconstructHoleCards(),
+//       this.pa1.reconstructHoleCards(),
+//       this.pa2.reconstructHoleCards(),
+//     ]);
+//   }
 
-    this.ownerTableView = this.ownerAgent.tableView;
-  }
+//   async constructFlopCards() {
+//     await Promise.all([
+//       this.pa0.flopCardDecryption(),
+//       this.pa1.flopCardDecryption(),
+//       this.pa2.flopCardDecryption(),
+//     ]);
 
-  async constructTurnCard() {
-    await Promise.all([
-      this.pa0.turnCardDecryption(),
-      this.pa1.turnCardDecryption(),
-      this.pa2.turnCardDecryption(),
-    ]);
+//     await Promise.all([
+//       this.pa0.displayFlopCards(),
+//       this.pa1.displayFlopCards(),
+//       this.pa2.displayFlopCards(),
+//     ]);
 
-    await Promise.all([
-      this.pa0.displayTurnCard(),
-      this.pa1.displayTurnCard(),
-      this.pa2.displayTurnCard(),
-    ]);
+//     this.ownerTableView = this.ownerAgent.tableView;
+//   }
 
-    this.ownerTableView = this.ownerAgent.tableView;
-  }
+//   async constructTurnCard() {
+//     await Promise.all([
+//       this.pa0.turnCardDecryption(),
+//       this.pa1.turnCardDecryption(),
+//       this.pa2.turnCardDecryption(),
+//     ]);
 
-  async constructRiverCard() {
-    await Promise.all([
-      this.pa0.riverCardDecryption(),
-      this.pa1.riverCardDecryption(),
-      this.pa2.riverCardDecryption(),
-    ]);
+//     await Promise.all([
+//       this.pa0.displayTurnCard(),
+//       this.pa1.displayTurnCard(),
+//       this.pa2.displayTurnCard(),
+//     ]);
 
-    await Promise.all([
-      this.pa0.displayRiverCard(),
-      this.pa1.displayRiverCard(),
-      this.pa2.displayRiverCard(),
-    ]);
+//     this.ownerTableView = this.ownerAgent.tableView;
+//   }
 
-    this.ownerTableView = this.ownerAgent.tableView;
-  }
-}
+//   async constructRiverCard() {
+//     await Promise.all([
+//       this.pa0.riverCardDecryption(),
+//       this.pa1.riverCardDecryption(),
+//       this.pa2.riverCardDecryption(),
+//     ]);
 
-export default Sim;
+//     await Promise.all([
+//       this.pa0.displayRiverCard(),
+//       this.pa1.displayRiverCard(),
+//       this.pa2.displayRiverCard(),
+//     ]);
+
+//     this.ownerTableView = this.ownerAgent.tableView;
+//   }
+// }
+
+// export default Sim;

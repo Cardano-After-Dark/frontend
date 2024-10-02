@@ -12,8 +12,12 @@ export function Hand({ player }: HandProps) {
   return (
     <Box
       sx={{
-        background: turn ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.2)',
-        border: turn ? '5px solid rgba(245, 16, 16, 0.75)' : '5px solid rgba(255, 255, 255, 0.05)',
+        background: turn
+          ? 'rgba(255, 255, 255, 0.5)'
+          : 'rgba(255, 255, 255, 0.2)',
+        border: turn
+          ? '5px solid rgba(245, 16, 16, 0.75)'
+          : '5px solid rgba(255, 255, 255, 0.05)',
         ...(turn && {
           animation: 'flash 2.5s infinite',
           '@keyframes flash': {
@@ -23,7 +27,7 @@ export function Hand({ player }: HandProps) {
             '50%': {
               borderColor: 'rgba(245, 16, 16, 0.75)',
             },
-          }
+          },
         }),
         borderRadius: 3,
         padding: '5px',
@@ -47,7 +51,7 @@ export function Hand({ player }: HandProps) {
           height: '100%',
           marginLeft: '10px',
           padding: '20px',
-         }}
+        }}
       >
         <Typography variant="h5">{name}</Typography>
         <Typography variant="subtitle1">{bank}</Typography>

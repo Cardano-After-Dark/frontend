@@ -6,40 +6,42 @@ import {
   PokerTable,
   River,
   Suits,
+  Seat,
+  Seats,
+  PlayerHand,
 } from '@after-dark-app/poker-ui';
 import { Box, Stack } from '@mui/material';
-
-import { PlayerState } from 'zkpoker';
 import { Chip } from '@mui/material';
 import { theme } from '../../../libs/poker-ui/src/lib/theme';
-import { GameState, TableState } from 'zkpoker';
-
+import { useState } from 'react';
+import SeatSelector from './SeatSelector';
+import { IPlayer } from './PokerGame';
+import { PlayerCards } from 'zkpoker';
 
 interface TableProps {
-  game: GameState;
-  cards: TableState;
+  onSeatSelect: (seat: Seats) => void;
+  ownerPlayer: { name: string; seat: Seats };
+  seatedPlayers: { seatPosition: Seats; player: IPlayer }[];
+  playerCards: PlayerCards;
 }
 
-const Table: React.FC<TableProps> = ({ game, cards }) => {
-  const ownerPlayer: PlayerState = game?.players.find(
-    (_, index) => index == game?.thisPlayerIndex
-  );
+const Table: React.FC<TableProps> = ({
+  onSeatSelect,
+  ownerPlayer,
+  seatedPlayers,
+  playerCards,
+}) => {
+  const [players, setPlayers] = useState<{
+    [key in Seats]?: { name: string; bank: number };
+  }>({});
 
-  const otherPlayers: PlayerState[] = game?.players.filter(
-    (_, index) => index != game?.thisPlayerIndex
-  );
+  const [seatSelected, setSeatSelected] = useState(false);
+  const [currPot, setCurrPot] = useState(0);
 
-  const ownerTurn: boolean =
-    game?.currPlayerIndex ==
-    game?.thisPlayerIndex;
-
-  const playerTurnByPubKey: string =
-    game?.players[game?.currPlayerIndex]
-      .playerPubKey;
-
-  const handActive: boolean = game?.currRoundIndex < 4;
-
-  const potEmpty: boolean = game?.currHand.pokerHandPot == 0;
+  const handleJoinSeat = (position: Seats) => {
+    onSeatSelect(position);
+    setSeatSelected(true);
+  };
 
   const cardValueMap = {
     A: CardValues.Ace,
@@ -58,174 +60,118 @@ const Table: React.FC<TableProps> = ({ game, cards }) => {
   };
 
   const suitMap = {
-    '♦': Suits.Diamonds,
-    '♣': Suits.Clubs,
-    '♥': Suits.Hearts,
-    '♠': Suits.Spades,
+    D: Suits.Diamonds,
+    C: Suits.Clubs,
+    H: Suits.Hearts,
+    S: Suits.Spades,
   };
 
-  const getSuitAndValue = (cardData) => {
-    // Perform your manipulations here
-    // For example, extracting suit and value from a string
-    if (cardData) {
-      let arr = cardData.split('');
-      const suit = arr.pop();
-      const value = arr.join('');
-
-      // Return the manipulated data
-      return {
-        suit,
-        value,
-      };
-    }
-
-    // Return null if no data is provided
-    return null;
-  };
-
-  const flopCards =
-    cards.flopCards &&
-    cards.flopCards.map(function (item, index) {
-      const card = getSuitAndValue(item);
-
-      return (
-        <PokerCard
-          key={`flop-${index}`}
-          suit={suitMap[card.suit]}
-          value={cardValueMap[card.value]}
-          scaleSize={0.7}
-        />
-      );
-    });
-
-  const turnCard = getSuitAndValue(cards.turnCard);
-
-  // Check if turnCard is defined and render the PokerCard component
-  const renderTurnCard = turnCard ? (
-    <PokerCard
-      key={`turn-card`}
-      suit={suitMap[turnCard.suit]}
-      value={cardValueMap[turnCard.value]}
-      scaleSize={0.7}
-    />
-  ) : null;
-
-  const riverCard = getSuitAndValue(cards.riverCard);
-
-  // Check if riverCard is defined and render the PokerCard component
-  const renderRiverCard = riverCard ? (
-    <PokerCard
-      key={`river-card`}
-      suit={suitMap[riverCard.suit]}
-      value={cardValueMap[riverCard.value]}
-      scaleSize={0.7}
-    />
-  ) : null;
-
-  const renderHoleCards =
-    cards.holeCards &&
-    cards.holeCards.map(function (item, index) {
-      const card = getSuitAndValue(item);
-
+  const ownerHoleCards =
+    playerCards.holeCards &&
+    playerCards.holeCards.map(function (card, index) {
       return (
         <PokerCard
           key={`hole-${index}`}
           suit={suitMap[card.suit]}
-          value={cardValueMap[card.value]}
+          value={cardValueMap[card.rank]}
           scaleSize={0.7}
           tilt={index === 1}
         />
       );
     });
 
-  const ownerHand = ownerPlayer ? (
-    <Hand
-      player={{
-        name: ownerPlayer.playerName,
-        bank: ownerPlayer.playerGameStack,
-        bet:
-          ownerPlayer.playerRounds[game.currRoundIndex]
-            .playerRoundCurBet == 0
-            ? null
-            : ownerPlayer.playerRounds[game.currRoundIndex]
-                .playerRoundCurBet,
-        // bet: 1,
-        cards: renderHoleCards,
-        turn:
-          !(Array.isArray(renderHoleCards) && renderHoleCards.length === 0) &&
-          ownerTurn &&
-          handActive,
-      }}
-    />
-  ) : null;
+  const othersHoleCards =
+    playerCards.holeCards &&
+    playerCards.holeCards.map(function (card, index) {
+      return (
+        <PokerCard key={`hole-${index}`} scaleSize={0.5} tilt={index === 1} />
+      );
+    });
 
-  const otherPlayerHands = otherPlayers ? (
-    <Players
-      players={otherPlayers.map(function (player, index) {
-        const thisPlayerTurn: boolean =
-          player.playerPubKey == playerTurnByPubKey &&
-          game.currRoundIndex <= 4;
+  const allHands = Object.entries(seatedPlayers)
+    .map(([seatPosition, player]) => {
+      if (player !== null) {
+        const isOwner = parseInt(seatPosition) - 1 === ownerPlayer.seat;
+        return (
+          <PlayerHand
+            key={seatPosition}
+            position={parseInt(seatPosition) - 1}
+            player={{
+              cards: isOwner ? ownerHoleCards : othersHoleCards,
+              name: player.name,
+              bank: player.stack,
+              // bet: 0,
+              turn: false,
+            }}
+          />
+        );
+      }
+      return null;
+    })
+    .filter(Boolean);
 
-        return {
-          name: player.playerName,
-          bank: player.playerGameStack,
-          bet:
-            player.playerRounds[game.currRoundIndex]
-              .playerRoundCurBet == 0
-              ? null
-              : player.playerRounds[game.currRoundIndex]
-                  .playerRoundCurBet,
-          // bet: 1,
-          cards:
-            (Array.isArray(renderHoleCards) && renderHoleCards.length === 0) ||
-            !player.playerHandActive
-              ? []
-              : [
-                  <PokerCard scaleSize={0.5} key={`${index}-1`} />,
-                  <PokerCard scaleSize={0.5} key={`${index}-2`} tilt />,
-                ],
-          turn: thisPlayerTurn && handActive,
-        };
-      })}
-    />
-  ) : null;
-
-  const communityCards = [
-    ...(flopCards ? [...flopCards] : []),
-    ...(renderTurnCard ? [renderTurnCard] : []),
-    ...(renderRiverCard ? [renderRiverCard] : []),
-  ];
+  // const hand = ownerPlayer ? (
+  //   <PlayerHand
+  //     position={ownerPlayer.seat}
+  //     player={{
+  //       cards: [],
+  //       name: ownerPlayer.name,
+  //       bank: 0,
+  //       // bet: 0,
+  //       turn: false,
+  //     }}
+  //   />
+  // ) : null;
 
   return (
-    <PokerTable>
-      <River>
-        <Stack direction={'row'} spacing={1}>
-          {communityCards}
-        </Stack>
-        {!potEmpty && (
-          <Chip
-            sx={{
-              position: 'absolute',
-              [theme.breakpoints.down('md')]: {
-                bottom: '105%',
-                left: 0,
-                zIndex: 1,
-              },
-              [theme.breakpoints.up('md')]: {
-                top: 'auto',
-                bottom: '-25%',
-                zIndex: 1,
-                fontSize: 16,
-              },
-            }}
-            color="info"
-            label={`Pot: ${game?.currHand.pokerHandPot}`}
-          />
-        )}
-      </River>
-      {ownerHand}
-      {otherPlayerHands}
-    </PokerTable>
+    <>
+      <PokerTable>
+        <River>
+          <Stack direction={'row'} spacing={1}>
+            {/* Community cards can be added here */}
+          </Stack>
+          {currPot > 0 && (
+            <Chip
+              sx={{
+                position: 'absolute',
+                [theme.breakpoints.down('md')]: {
+                  bottom: '105%',
+                  left: 0,
+                  zIndex: 1,
+                },
+                [theme.breakpoints.up('md')]: {
+                  top: 'auto',
+                  bottom: '-25%',
+                  zIndex: 1,
+                  fontSize: 16,
+                },
+              }}
+              color="info"
+              label={`Pot: ${currPot}`}
+            />
+          )}
+        </River>
+        {allHands}
+      </PokerTable>
+      {ownerPlayer.seat == null &&
+        Object.entries(seatedPlayers)
+          .map(([seatNumber, player]) => {
+            const seat = parseInt(seatNumber) - 1;
+            if (player === null) {
+              return (
+                <Seat key={seat} position={seat}>
+                  <SeatSelector
+                    position={seat}
+                    player={null}
+                    onJoin={handleJoinSeat}
+                  />
+                </Seat>
+              );
+            }
+            return null;
+          })
+          .filter(Boolean)}
+    </>
   );
 };
 
