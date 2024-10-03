@@ -86,8 +86,6 @@ const Table: React.FC<TableProps> = ({
       );
     });
 
-  console.log(playerCards);
-
   const othersHoleCards = (playerId: string) => {
     if (showdownCards && showdownCards[playerId]) {
       return showdownCards[playerId].map((card, index) => (
@@ -103,12 +101,7 @@ const Table: React.FC<TableProps> = ({
       return (
         playerCards.holeCards &&
         playerCards.holeCards.map((card, index) => (
-          <PokerCard
-            key={`hole-${index}`}
-            scaleSize={0.5}
-            tilt={index === 1}
-            hidden
-          />
+          <PokerCard key={`hole-${index}`} scaleSize={0.5} tilt={index === 1} />
         ))
       );
     }
