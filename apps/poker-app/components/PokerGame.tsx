@@ -3,8 +3,15 @@ import Table from './Table';
 import LoadingOverlay from './LoadingOverlayCards';
 import { Seats } from '@after-dark-app/poker-ui';
 import LoginOverlay from './LoginOverlay';
-import { PlayerApp, PlayerCards, Card } from 'zkpoker';
+import {
+  PlayerApp,
+  PlayerCards,
+  Card,
+  BettingAction,
+  ShowdownCards,
+} from 'zkpoker';
 import GameSettingsPanel from './GameSettingsPanel';
+import ActionPanel from './ActionPanel';
 
 // import ZkPokerConnector from './Simulation';
 
@@ -47,6 +54,11 @@ const PokerGame: React.FC = () => {
   const playerAppRef = useRef<PlayerApp | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
   const [playerCards, setPlayerCards] = useState<PlayerCards>(EmptyPlayerCards);
+  const [bettingTurn, setBettingTurn] = useState<IPlayer | null>(null);
+  const [gameWinnerId, setGameWinnerId] = useState<string | null>(null);
+  const [showdownCards, setShowdownCards] = useState<ShowdownCards | null>(
+    null
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -94,7 +106,7 @@ const PokerGame: React.FC = () => {
     async (name: string) => {
       setOwnerName(name);
       setIsLoggedIn(true);
-      const player = {
+      const player: IPlayer = {
         id: new Date().getTime().toString(36),
         name: name,
         stack: 1_000,
@@ -120,6 +132,31 @@ const PokerGame: React.FC = () => {
         (playerCards: PlayerCards) => {
           setPlayerCards(playerCards);
           console.log('playerCards', playerCards);
+        }
+      );
+      playerAppRef.current.receiveEventEmitter.on(
+        'updater.gameStarted',
+        (bool: boolean) => {
+          setGameStarted(bool);
+        }
+      );
+      playerAppRef.current.internalEventEmitter.on(
+        'updater.bettingTurn',
+        (player: IPlayer) => {
+          setBettingTurn(player);
+        }
+      );
+      playerAppRef.current.internalEventEmitter.on(
+        'updater.gameWinnerId',
+        (winnerId: string) => {
+          setGameWinnerId(winnerId);
+          console.log('game winner id', winnerId);
+        }
+      );
+      playerAppRef.current.internalEventEmitter.on(
+        'updater.showdownCards',
+        (showdownCards: ShowdownCards) => {
+          setShowdownCards(showdownCards);
         }
       );
     },
@@ -159,6 +196,14 @@ const PokerGame: React.FC = () => {
     // playerAppRef.current?.startGame();
   }, []);
 
+  const handleBet = async (betAmount: number) => {
+    await playerAppRef.current?.placeBet(BettingAction.BET, betAmount);
+  };
+
+  const handleFold = async () => {
+    await playerAppRef.current?.placeBet(BettingAction.FOLD, 0);
+  };
+
   return (
     <>
       {!isLoggedIn ? (
@@ -180,6 +225,17 @@ const PokerGame: React.FC = () => {
             ownerPlayer={ownerPlayer}
             seatedPlayers={seatedPlayers}
             playerCards={playerCards}
+            bettingTurn={bettingTurn}
+            gameWinnerId={gameWinnerId}
+            showdownCards={showdownCards}
+          />
+          <ActionPanel
+            onActionBet={handleBet}
+            onActionFold={handleFold}
+            bigBlind={20}
+            currHiBet={20}
+            playerCurrBet={0}
+            playerStack={1000}
           />
         </>
       )}

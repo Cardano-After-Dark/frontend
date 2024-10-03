@@ -16,13 +16,16 @@ import { theme } from '../../../libs/poker-ui/src/lib/theme';
 import { useState } from 'react';
 import SeatSelector from './SeatSelector';
 import { IPlayer } from './PokerGame';
-import { PlayerCards } from 'zkpoker';
+import { PlayerCards, ShowdownCards } from 'zkpoker';
 
 interface TableProps {
   onSeatSelect: (seat: Seats) => void;
   ownerPlayer: { name: string; seat: Seats };
   seatedPlayers: { seatPosition: Seats; player: IPlayer }[];
   playerCards: PlayerCards;
+  bettingTurn: IPlayer | null;
+  gameWinnerId: string | null;
+  showdownCards: ShowdownCards | null;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -30,6 +33,9 @@ const Table: React.FC<TableProps> = ({
   ownerPlayer,
   seatedPlayers,
   playerCards,
+  bettingTurn,
+  gameWinnerId,
+  showdownCards,
 }) => {
   const [players, setPlayers] = useState<{
     [key in Seats]?: { name: string; bank: number };
@@ -80,13 +86,33 @@ const Table: React.FC<TableProps> = ({
       );
     });
 
-  const othersHoleCards =
-    playerCards.holeCards &&
-    playerCards.holeCards.map(function (card, index) {
+  console.log(playerCards);
+
+  const othersHoleCards = (playerId: string) => {
+    if (showdownCards && showdownCards[playerId]) {
+      return showdownCards[playerId].map((card, index) => (
+        <PokerCard
+          key={`hole-${index}`}
+          suit={suitMap[card.suit]}
+          value={cardValueMap[card.rank]}
+          scaleSize={0.5}
+          tilt={index === 1}
+        />
+      ));
+    } else {
       return (
-        <PokerCard key={`hole-${index}`} scaleSize={0.5} tilt={index === 1} />
+        playerCards.holeCards &&
+        playerCards.holeCards.map((card, index) => (
+          <PokerCard
+            key={`hole-${index}`}
+            scaleSize={0.5}
+            tilt={index === 1}
+            hidden
+          />
+        ))
       );
-    });
+    }
+  };
 
   const allHands = Object.entries(seatedPlayers)
     .map(([seatPosition, player]) => {
@@ -97,11 +123,12 @@ const Table: React.FC<TableProps> = ({
             key={seatPosition}
             position={parseInt(seatPosition) - 1}
             player={{
-              cards: isOwner ? ownerHoleCards : othersHoleCards,
+              cards: isOwner ? ownerHoleCards : othersHoleCards(player.id),
               name: player.name,
               bank: player.stack,
               // bet: 0,
-              turn: false,
+              turn: bettingTurn?.id === player.id,
+              winner: gameWinnerId === player.id,
             }}
           />
         );
@@ -109,6 +136,51 @@ const Table: React.FC<TableProps> = ({
       return null;
     })
     .filter(Boolean);
+
+  const flopCards =
+    playerCards.flopCards &&
+    playerCards.flopCards.map((card, index) =>
+      card ? (
+        <PokerCard
+          key={`flop-${index}`}
+          suit={suitMap[card.suit]}
+          value={cardValueMap[card.rank]}
+          scaleSize={0.8}
+        />
+      ) : null
+    );
+
+  const turnCard =
+    playerCards.turnCard &&
+    playerCards.turnCard.map((card, index) =>
+      card ? (
+        <PokerCard
+          key={`turn-${index}`}
+          suit={suitMap[card.suit]}
+          value={cardValueMap[card.rank]}
+          scaleSize={0.8}
+        />
+      ) : null
+    );
+
+  const riverCard =
+    playerCards.riverCard &&
+    playerCards.riverCard.map((card, index) =>
+      card ? (
+        <PokerCard
+          key={`river-${index}`}
+          suit={suitMap[card.suit]}
+          value={cardValueMap[card.rank]}
+          scaleSize={0.8}
+        />
+      ) : null
+    );
+
+  const communityCards = [
+    ...(flopCards || []),
+    ...(turnCard || []),
+    ...(riverCard || []),
+  ];
 
   // const hand = ownerPlayer ? (
   //   <PlayerHand
@@ -128,7 +200,7 @@ const Table: React.FC<TableProps> = ({
       <PokerTable>
         <River>
           <Stack direction={'row'} spacing={1}>
-            {/* Community cards can be added here */}
+            {communityCards}
           </Stack>
           {currPot > 0 && (
             <Chip

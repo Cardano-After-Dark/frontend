@@ -143,7 +143,7 @@ type PlayerProps = PlayerConfig;
 // ];
 
 export function PlayerHand({ position, player }: PlayerProps) {
-  const { cards, name, bank, bet, turn } = player;
+  const { cards, name, bank, bet, turn, winner } = player;
 
   return (
     <Box
@@ -169,6 +169,18 @@ export function PlayerHand({ position, player }: PlayerProps) {
             },
             '50%': {
               borderColor: 'rgba(245, 16, 16, 0.75)',
+            },
+          },
+        }),
+        ...(winner && {
+          border: '10px solid rgba(0, 255, 0, 0.75)',
+          animation: 'winnerFlash 2.5s infinite',
+          '@keyframes winnerFlash': {
+            '0%, 100%': {
+              borderColor: 'rgba(0, 255, 0, 0.75)',
+            },
+            '50%': {
+              borderColor: 'rgba(255, 255, 255, 0.05)',
             },
           },
         }),

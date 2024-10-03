@@ -133,7 +133,7 @@ export function PokerCard({
             top: scaleSize * 2,
             left: scaleSize * 10,
             fontWeight: 900,
-            fontSize: scaleSize * 1.5 + 'rem',
+            fontSize: scaleSize * 2 + 'rem',
           }}
         >
           {value}
@@ -146,7 +146,7 @@ export function PokerCard({
             bottom: scaleSize * 2,
             right: scaleSize * 10,
             fontWeight: 900,
-            fontSize: scaleSize * 1.5 + 'rem',
+            fontSize: scaleSize * 2 + 'rem',
           }}
         >
           {value}
