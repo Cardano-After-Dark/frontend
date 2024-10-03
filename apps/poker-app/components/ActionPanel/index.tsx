@@ -20,9 +20,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
   playerCurrBet,
   playerStack,
 }) => {
-  const [betSliderValue, setBetSliderValue] = useState<number>(
-    bigBlind + currHiBet
-  );
+  const [betSliderValue, setBetSliderValue] = useState(bigBlind + currHiBet);
 
   const handleBetSliderChange = (value: number) => {
     setBetSliderValue(value);
@@ -31,80 +29,57 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
   return (
     <div className={styles.actionPanelContainer}>
       <div className={styles.actionButtonContainer}>
-        <>
-          {currHiBet == 0 ? (
-            <div className={styles.actionButtonWrapper}>
-              <ActionButton
-                onClick={() => onActionBet(0)}
-                text="Check"
-                buttonType="betButton"
-              />
-            </div>
+        <div className={styles.actionButtonWrapper}>
+          {currHiBet === 0 ? (
+            <ActionButton
+              onClick={() => onActionBet(0)}
+              text="Check"
+              buttonType="bet"
+            />
           ) : (
-            <div className={styles.actionButtonWrapper}>
-              <ActionButton
-                onClick={
-                  playerStack > currHiBet
-                    ? () => onActionBet(currHiBet)
-                    : () => onActionBet(playerStack + playerCurrBet)
-                }
-                text={
-                  playerStack > currHiBet
-                    ? `Call ${currHiBet}`
-                    : `All-In ${playerStack + playerCurrBet}`
-                }
-                buttonType="betButton"
-              />
-            </div>
+            <ActionButton
+              onClick={
+                playerStack > currHiBet
+                  ? () => onActionBet(currHiBet)
+                  : () => onActionBet(playerStack + playerCurrBet)
+              }
+              text="Call"
+              subText={`${
+                playerStack > currHiBet
+                  ? currHiBet
+                  : playerStack + playerCurrBet
+              }`}
+              buttonType="bet"
+            />
           )}
-        </>
-
-        <>
-          {playerStack >= betSliderValue - playerCurrBet && (
-            <div className={styles.actionButtonWrapper}>
-              <ActionButton
-                onClick={
-                  playerStack > currHiBet
-                    ? () => onActionBet(betSliderValue)
-                    : () => onActionBet(playerStack + playerCurrBet)
-                }
-                text={
-                  playerStack == betSliderValue
-                    ? `All-In ${betSliderValue + playerCurrBet}`
-                    : currHiBet == 0
-                    ? `Bet ${betSliderValue}`
-                    : `Raise ${betSliderValue}`
-                }
-                buttonType="betButton"
-              />
-            </div>
-          )}
-        </>
-
+        </div>
         <div className={styles.actionButtonWrapper}>
           <ActionButton
-            onClick={onActionFold}
-            text="Fold"
-            buttonType="foldButton"
+            onClick={
+              playerStack > currHiBet
+                ? () => onActionBet(betSliderValue)
+                : () => onActionBet(playerStack + playerCurrBet)
+            }
+            text={currHiBet === 0 ? 'Bet' : 'Raise'}
+            subText={`${betSliderValue}`}
+            buttonType="bet"
+            disabled={playerStack < betSliderValue - playerCurrBet}
           />
+        </div>
+        <div className={styles.actionButtonWrapper}>
+          <ActionButton onClick={onActionFold} text="Fold" buttonType="fold" />
         </div>
       </div>
 
-      {playerStack >= betSliderValue - playerCurrBet && (
-        <div className={styles.actionSliderWrapper}>
-          <ActionSlider
-            value={betSliderValue}
-            onChange={handleBetSliderChange}
-            min={bigBlind + currHiBet}
-            max={playerStack + playerCurrBet}
-            step={bigBlind}
-          />
-        </div>
-      )}
-
-      {/* <div className={styles.actionButtonWrapper}>
-        <ActionButton onClick={handleBetValue} text="Bet" buttonType="betButton" />
-      </div> */}
+      <div className={styles.actionSliderWrapper}>
+        <ActionSlider
+          value={betSliderValue}
+          onChange={handleBetSliderChange}
+          min={bigBlind + currHiBet}
+          max={playerStack + playerCurrBet}
+          step={bigBlind}
+        />
+      </div>
     </div>
   );
 };

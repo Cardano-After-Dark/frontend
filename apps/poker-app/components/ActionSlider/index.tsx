@@ -29,10 +29,24 @@ const ActionSlider: React.FC<ActionSliderProps> = ({
   };
 
   return (
-    <>
-      <div className={styles.sliderValue}>Bet: {value}</div>
+    <div className={styles.sliderContainer}>
       <div className={styles.sliderBar}>
-        <button onClick={handleDecrement}>-</button>
+        <button className={styles.sliderButton} onClick={handleDecrement}>
+          <svg
+            width="12"
+            height="2"
+            viewBox="0 0 12 2"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 1H11"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
         <input
           type="range"
           min={min}
@@ -42,9 +56,24 @@ const ActionSlider: React.FC<ActionSliderProps> = ({
           onChange={(e) => onChange(Number(e.target.value))}
           className={styles.sliderInput}
         />
-        <button onClick={handleIncrement}>+</button>
+        <button className={styles.sliderButton} onClick={handleIncrement}>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 1V11M1 6H11"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
       </div>
-    </>
+    </div>
   );
 };
 

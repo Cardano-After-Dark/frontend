@@ -120,7 +120,7 @@ const Table: React.FC<TableProps> = ({
               name: player.name,
               bank: player.stack,
               // bet: 0,
-              turn: bettingTurn?.id === player.id,
+              turn: gameWinnerId === null && bettingTurn?.id === player.id,
               winner: gameWinnerId === player.id,
             }}
           />
