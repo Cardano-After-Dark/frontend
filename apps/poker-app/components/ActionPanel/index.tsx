@@ -43,7 +43,9 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
                   ? () => onActionBet(currHiBet)
                   : () => onActionBet(playerStack + playerCurrBet)
               }
-              text="Call"
+              text={
+                playerStack + playerCurrBet === currHiBet ? 'All-in' : 'Call'
+              }
               subText={`${
                 playerStack > currHiBet
                   ? currHiBet
@@ -60,7 +62,13 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
                 ? () => onActionBet(betSliderValue)
                 : () => onActionBet(playerStack + playerCurrBet)
             }
-            text={currHiBet === 0 ? 'Bet' : 'Raise'}
+            text={
+              betSliderValue === playerStack + playerCurrBet
+                ? 'All-in'
+                : currHiBet === 0
+                ? 'Bet'
+                : 'Raise'
+            }
             subText={`${betSliderValue}`}
             buttonType="bet"
             disabled={playerStack < betSliderValue - playerCurrBet}

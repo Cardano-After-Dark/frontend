@@ -16,7 +16,7 @@ import { theme } from '../../../libs/poker-ui/src/lib/theme';
 import { useState } from 'react';
 import SeatSelector from './SeatSelector';
 import { IPlayer } from './PokerGame';
-import { PlayerCards, ShowdownCards } from 'zkpoker';
+import { PlayerCards, ShowdownCards, PlayerBetAmounts } from 'zkpoker';
 
 interface TableProps {
   onSeatSelect: (seat: Seats) => void;
@@ -26,6 +26,8 @@ interface TableProps {
   bettingTurn: IPlayer | null;
   gameWinnerId: string | null;
   showdownCards: ShowdownCards | null;
+  currentPot: number;
+  playerBetAmounts: PlayerBetAmounts | null;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -36,13 +38,15 @@ const Table: React.FC<TableProps> = ({
   bettingTurn,
   gameWinnerId,
   showdownCards,
+  currentPot,
+  playerBetAmounts,
 }) => {
   const [players, setPlayers] = useState<{
     [key in Seats]?: { name: string; bank: number };
   }>({});
 
   const [seatSelected, setSeatSelected] = useState(false);
-  const [currPot, setCurrPot] = useState(0);
+  // const [currPot, setCurrPot] = useState(0);
 
   const handleJoinSeat = (position: Seats) => {
     onSeatSelect(position);
@@ -119,7 +123,9 @@ const Table: React.FC<TableProps> = ({
               cards: isOwner ? ownerHoleCards : othersHoleCards(player.id),
               name: player.name,
               bank: player.stack,
-              // bet: 0,
+              bet:
+                (gameWinnerId === null && playerBetAmounts?.get(player.id)) ||
+                null,
               turn: gameWinnerId === null && bettingTurn?.id === player.id,
               winner: gameWinnerId === player.id,
             }}
@@ -195,7 +201,7 @@ const Table: React.FC<TableProps> = ({
           <Stack direction={'row'} spacing={1}>
             {communityCards}
           </Stack>
-          {currPot > 0 && (
+          {currentPot > 0 && (
             <Chip
               sx={{
                 position: 'absolute',
@@ -206,13 +212,13 @@ const Table: React.FC<TableProps> = ({
                 },
                 [theme.breakpoints.up('md')]: {
                   top: 'auto',
-                  bottom: '-25%',
+                  bottom: '-35%',
                   zIndex: 1,
                   fontSize: 16,
                 },
               }}
               color="info"
-              label={`Pot: ${currPot}`}
+              label={`Pot: ${currentPot}`}
             />
           )}
         </River>

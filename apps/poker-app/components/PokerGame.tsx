@@ -9,6 +9,7 @@ import {
   Card,
   BettingAction,
   ShowdownCards,
+  PlayerBetAmounts,
 } from 'zkpoker';
 import GameSettingsPanel from './GameSettingsPanel';
 import ActionPanel from './ActionPanel';
@@ -42,6 +43,8 @@ const PokerGame: React.FC = () => {
   // Add these state variables
   const [ownerName, setOwnerName] = useState<string>('');
   const [ownerSeat, setOwnerSeat] = useState<Seats | null>(null);
+  const [ownerId, setOwnerId] = useState<string | null>(null);
+  const [ownerBettingTurn, setOwnerBettingTurn] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [seatedPlayers, setSeatedPlayers] = useState<ISeats>({
     1: null,
@@ -59,6 +62,10 @@ const PokerGame: React.FC = () => {
   const [showdownCards, setShowdownCards] = useState<ShowdownCards | null>(
     null
   );
+  const [currentHighBet, setCurrentHighBet] = useState<number>(0);
+  const [currentPot, setCurrentPot] = useState<number>(0);
+  const [playerBetAmounts, setPlayerBetAmounts] =
+    useState<PlayerBetAmounts | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -111,6 +118,10 @@ const PokerGame: React.FC = () => {
         name: name,
         stack: 1_000,
       };
+
+      const ownerId = player.id;
+      setOwnerId(ownerId);
+
       const newPlayerApp = new PlayerApp(player);
       await new Promise((resolve) => setTimeout(resolve, 500));
       newPlayerApp.joinPokerRoom();
@@ -144,6 +155,11 @@ const PokerGame: React.FC = () => {
         'updater.bettingTurn',
         (player: IPlayer) => {
           setBettingTurn(player);
+          console.log('betting turn', player);
+          console.log('ownerId', ownerId);
+          console.log('player.id', player.id);
+          console.log('player.id == ownerId', player.id == ownerId);
+          setOwnerBettingTurn(player.id == ownerId);
         }
       );
       playerAppRef.current.internalEventEmitter.on(
@@ -157,6 +173,24 @@ const PokerGame: React.FC = () => {
         'updater.showdownCards',
         (showdownCards: ShowdownCards) => {
           setShowdownCards(showdownCards);
+        }
+      );
+      playerAppRef.current.internalEventEmitter.on(
+        'updater.currentHighBet',
+        (highBet: number) => {
+          setCurrentHighBet(highBet);
+        }
+      );
+      playerAppRef.current.internalEventEmitter.on(
+        'updater.currentPot',
+        (pot: number) => {
+          setCurrentPot(pot);
+        }
+      );
+      playerAppRef.current.internalEventEmitter.on(
+        'updater.playerBetAmounts',
+        (playerBetAmounts: PlayerBetAmounts) => {
+          setPlayerBetAmounts(playerBetAmounts);
         }
       );
     },
@@ -228,15 +262,19 @@ const PokerGame: React.FC = () => {
             bettingTurn={bettingTurn}
             gameWinnerId={gameWinnerId}
             showdownCards={showdownCards}
+            currentPot={currentPot}
+            playerBetAmounts={playerBetAmounts}
           />
-          <ActionPanel
-            onActionBet={handleBet}
-            onActionFold={handleFold}
-            bigBlind={20}
-            currHiBet={20}
-            playerCurrBet={0}
-            playerStack={1000}
-          />
+          {ownerBettingTurn && gameWinnerId == null && (
+            <ActionPanel
+              onActionBet={handleBet}
+              onActionFold={handleFold}
+              bigBlind={20}
+              currHiBet={currentHighBet}
+              playerCurrBet={playerBetAmounts?.[ownerId] || 0}
+              playerStack={seatedPlayers[ownerSeat + 1]?.stack || 1000}
+            />
+          )}
         </>
       )}
     </>
